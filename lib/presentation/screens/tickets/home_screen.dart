@@ -1,4 +1,6 @@
+import 'package:elanel_asistencia_it/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -17,13 +19,43 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class _HomeView extends StatelessWidget {
+class _HomeView extends ConsumerStatefulWidget {
  const _HomeView();
+
+  @override
+  _HomeViewState createState() => _HomeViewState();
+}
+
+class _HomeViewState extends ConsumerState<_HomeView> {
+
+  @override
+  void initState() {
+    super.initState();
+    
+    ref.read(recentTicketsProvider.notifier).loadTickets();
+
+  }
 
  @override
  Widget build(BuildContext context) {
-   return const Center(
-     child: Text('HomeView'),
-   );
+
+  final recentTickets = ref.watch(recentTicketsProvider);
+
+  return ListView.builder(
+    itemCount: recentTickets.length,
+    itemBuilder: (context, index) {
+
+      final ticket = recentTickets[index];
+
+      return ListTile(
+        title: Text(ticket.title),
+        subtitle: Text(ticket.description),
+        trailing: Text(ticket.status.toString()),
+        onTap: () {
+          // Handle ticket tap
+        },
+      );
+    },
+  );
  }
 }
