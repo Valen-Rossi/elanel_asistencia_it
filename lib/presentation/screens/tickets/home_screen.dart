@@ -1,4 +1,3 @@
-import 'package:elanel_asistencia_it/config/helpers/date_time_ago.dart';
 import 'package:elanel_asistencia_it/domain/entities/ticket.dart';
 import 'package:elanel_asistencia_it/presentation/providers/providers.dart';
 import 'package:elanel_asistencia_it/presentation/widgets/widgets.dart';
@@ -40,9 +39,9 @@ class _HomeViewState extends ConsumerState<_HomeView> {
  Widget build(BuildContext context) {
 
   final recentTickets = ref.watch(recentTicketsProvider);
-  final List<Ticket> newTickets = ref.watch(recentTicketsProvider).where((ticket) => ticket.status == TicketStatus.newTicket).toList();
-  final List<Ticket> inProgressTickets = ref.watch(recentTicketsProvider).where((ticket) => ticket.status == TicketStatus.inProgress).toList();
-  final List<Ticket> resolvedTickets = ref.watch(recentTicketsProvider).where((ticket) => ticket.status == TicketStatus.resolved).toList();
+  final newTickets = ref.watch(newTicketsProvider);
+  final inProgressTickets = ref.watch(inProgressTicketsProvider);
+  final resolvedTickets = ref.watch(resolvedTicketsProvider);
   final isLoading = ref.watch(recentTicketsProvider.notifier).isLoading;
   final colors = Theme.of(context).colorScheme;
   final textTheme = Theme.of(context).textTheme;
@@ -98,52 +97,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
         
             final ticket = recentTickets[index];
         
-            return Container(
-              margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-              padding: const EdgeInsets.symmetric(vertical: 17),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: colors.onInverseSurface,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-
-                        Text(ticket.title,
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-
-                        const SizedBox(height: 5),
-
-                        Container(
-                          margin: const EdgeInsets.only(top: 5),
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          decoration: BoxDecoration(
-                            color: ticket.status == TicketStatus.newTicket ? Color.fromARGB(123, 10, 167, 240) : 
-                                   ticket.status == TicketStatus.inProgress ? Color.fromARGB(132, 241, 138, 21) : Color.fromARGB(124, 42, 243, 92),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(ticket.status.name),
-                        ),
-                      ],
-                    ),
-
-                    const Spacer(),
-
-                    Text(DateTimeAgo.getTimeAgoFormat(ticket.createdAt)),
-
-                  ],
-                )
-              )
-            );
+            return Ticket_Card(ticket: ticket);
           },
         ),
       ),
@@ -152,6 +106,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   );
  }
 }
+
 
 class _CustomCard extends StatelessWidget {
   const _CustomCard({
