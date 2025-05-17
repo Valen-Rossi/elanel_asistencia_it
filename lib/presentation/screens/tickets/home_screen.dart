@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -96,15 +97,21 @@ class _HomeViewState extends ConsumerState<_HomeView> {
       Expanded(
         child: ListView.builder(
           padding: const EdgeInsets.symmetric(),
+          physics: const BouncingScrollPhysics(),
           itemCount: recentTickets.length,
           itemBuilder: (context, index) {
         
             final ticket = recentTickets[index];
         
-            return Ticket_Card(ticket: ticket);
+            return FadeIn(
+              delay: Duration(milliseconds: 200+index * 100),
+              child: TicketCard(ticket: ticket),
+            );
           },
         ),
       ),
+
+      SizedBox(height: 10,),
 
     ],
   );

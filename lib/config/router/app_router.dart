@@ -10,6 +10,20 @@ final appRouter = GoRouter(
             path: "/",
             name: HomeScreen.name,
             builder: (context, state) => const HomeScreen(),
+            routes: [
+
+              GoRoute(
+                path: "ticket/:id",
+                name: TicketScreen.name,
+                builder: (context, state) {
+
+                  final ticketId = state.pathParameters['id']?? '';
+
+                  return TicketScreen(ticketId: ticketId);
+                }
+            ),
+
+            ]
         ),
 
     ],
