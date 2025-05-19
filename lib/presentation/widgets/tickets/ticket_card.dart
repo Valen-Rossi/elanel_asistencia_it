@@ -31,35 +31,35 @@ class TicketCard extends StatelessWidget {
             child: Row(
               children: [
 
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-                    Text(
-                      ticket.title,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                  
+                      Text(
+                        ticket.title,
+                        style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 5),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      decoration: BoxDecoration(
-                        color: ticket.status == TicketStatus.newTicket
-                            ? const Color.fromARGB(123, 10, 167, 240)
-                            : ticket.status == TicketStatus.inProgress
-                                ? const Color.fromARGB(132, 241, 138, 21)
-                                : const Color.fromARGB(124, 42, 243, 92),
-                        borderRadius: BorderRadius.circular(20),
+                      const SizedBox(height: 5),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: ticket.status == TicketStatus.newTicket
+                              ? const Color.fromARGB(123, 10, 167, 240)
+                              : ticket.status == TicketStatus.inProgress
+                                  ? const Color.fromARGB(132, 241, 138, 21)
+                                  : const Color.fromARGB(124, 42, 243, 92),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(ticket.status.name),
                       ),
-                      child: Text(ticket.status.name),
-                    ),
-
-                  ],
+                  
+                    ],
+                  ),
                 ),
-
-                const Spacer(),
 
                 Timeago(
                   date: ticket.createdAt,

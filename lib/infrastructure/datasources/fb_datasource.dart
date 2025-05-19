@@ -22,7 +22,7 @@ class FbDatasource extends TicketsDatasource {
     final List<Ticket> tickets = [
       Ticket(
         id: '001',
-        title: 'Problema con impresora HP',
+        title: 'Problema con impresora HP: no funciona',
         description: 'La impresora no imprime documentos PDF. Aparece un error de "trabajo en cola".',
         status: TicketStatus.newTicket,
         priority: TicketPriority.medium,
