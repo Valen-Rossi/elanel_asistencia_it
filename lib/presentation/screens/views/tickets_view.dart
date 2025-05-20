@@ -35,7 +35,7 @@ class TicketsViewState extends ConsumerState<TicketsView> {
     floatingActionButton: FloatingActionButton(
       shape: CircleBorder(),
         onPressed: () {
-          // context.go('');
+          context.push('/new-ticket');
         },
         child: const Icon(Icons.add),
       ),

@@ -48,27 +48,10 @@ final appRouter = GoRouter(
         ]
       ),
 
-
-        // Rutas padre/hijo
-        // GoRoute(
-        //     path: "/",
-        //     name: HomeScreen.name,
-        //     builder: (context, state) => const HomeScreen(childView: HomeView(),),
-        //     routes: [
-
-        //       GoRoute(
-        //         path: "ticket/:id",
-        //         name: TicketScreen.name,
-        //         builder: (context, state) {
-
-        //           final ticketId = state.pathParameters['id']?? '';
-
-        //           return TicketScreen(ticketId: ticketId);
-        //         }
-        //     ),
-
-        //     ]
-        // ),
+      GoRoute(
+        path: '/new-ticket',
+        builder: (context, state) => const NewTicketScreen(),
+      ),
 
     ],
 
