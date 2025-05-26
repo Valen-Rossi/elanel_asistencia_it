@@ -1,8 +1,7 @@
-
 import 'package:elanel_asistencia_it/domain/datasources/tickets_datasource.dart';
 import 'package:elanel_asistencia_it/domain/entities/ticket.dart';
 
-class FbDatasource extends TicketsDatasource {
+class TicketsFbDatasource extends ITicketsDatasource {
 
   final List<Ticket> tickets = [
     Ticket(
@@ -13,7 +12,7 @@ class FbDatasource extends TicketsDatasource {
       priority: TicketPriority.medium,
       category: 'Hardware',
       productId: '101',
-      technicianId: '201',
+      technicianId: '002',
       createdAt: DateTime.now(),
     ),
     Ticket(
@@ -24,7 +23,7 @@ class FbDatasource extends TicketsDatasource {
       priority: TicketPriority.high,
       category: 'Redes',
       productId: '102',
-      technicianId: '202',
+      technicianId: '007',
       createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
     ),
     Ticket(
@@ -35,7 +34,7 @@ class FbDatasource extends TicketsDatasource {
       priority: TicketPriority.low,
       category: 'Software',
       productId: '103',
-      technicianId: '203',
+      technicianId: '008',
       createdAt: DateTime.now().subtract(const Duration(hours: 1)),
     ),
     Ticket(
@@ -46,7 +45,7 @@ class FbDatasource extends TicketsDatasource {
       priority: TicketPriority.high,
       category: 'Autenticación',
       productId: '104',
-      technicianId: '204',
+      technicianId: '005',
       createdAt: DateTime.now().subtract(const Duration(days: 1)),
     ),
     Ticket(
@@ -57,7 +56,7 @@ class FbDatasource extends TicketsDatasource {
       priority: TicketPriority.medium,
       category: 'Correo',
       productId: '105',
-      technicianId: '205',
+      technicianId: '002',
       createdAt: DateTime.now().subtract(const Duration(days: 1, hours: 3)),
     ),
     Ticket(
@@ -68,7 +67,7 @@ class FbDatasource extends TicketsDatasource {
       priority: TicketPriority.high,
       category: 'Hardware',
       productId: '106',
-      technicianId: '206',
+      technicianId: '005',
       createdAt: DateTime.now().subtract(const Duration(days: 8)),
     ),
     Ticket(
@@ -79,7 +78,7 @@ class FbDatasource extends TicketsDatasource {
       priority: TicketPriority.low,
       category: 'Solicitudes',
       productId: '107',
-      technicianId: '207',
+      technicianId: '007',
       createdAt: DateTime.now().subtract(const Duration(days: 20)),
     ),
     Ticket(
@@ -90,7 +89,7 @@ class FbDatasource extends TicketsDatasource {
       priority: TicketPriority.high,
       category: 'Infraestructura',
       productId: '108',
-      technicianId: '208',
+      technicianId: '008',
       createdAt: DateTime.now().subtract(const Duration(days: 31)),
     ),
   ];

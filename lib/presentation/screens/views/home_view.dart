@@ -20,6 +20,7 @@ class HomeViewState extends ConsumerState<HomeView> {
     super.initState();
     
     ref.read(recentTicketsProvider.notifier).loadTickets();
+    ref.read(usersProvider.notifier).loadUsers();
 
   }
 

@@ -1,3 +1,5 @@
+import 'package:elanel_asistencia_it/domain/entities/user.dart';
+import 'package:elanel_asistencia_it/presentation/providers/users/user_info_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timeago_flutter/timeago_flutter.dart';
@@ -10,11 +12,16 @@ class TicketScreen extends ConsumerWidget {
   final String ticketId;
 
   const TicketScreen({super.key, required this.ticketId});
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
     final Ticket ticket = ref.watch(ticketByIdProvider(ticketId));
+    final List<User> users = ref.watch(usersProvider);
+    
+    final User? technician = (ticket.technicianId != '')
+      ? ref.watch(userByIdProvider(ticket.technicianId))
+      : null;
+
     final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
@@ -28,17 +35,21 @@ class TicketScreen extends ConsumerWidget {
           ),
         ),
       ),
-      body: _TicketView(ticket: ticket),
+      body: _TicketView(ticket: ticket, technician: technician, users: users,),
     );
   }
 }
 
 class _TicketView extends StatelessWidget {
   const _TicketView({
-    required this.ticket,
+    required this.ticket, 
+    required this.users, 
+    this.technician, 
   });
 
   final Ticket ticket;
+  final List<User> users;
+  final User? technician;
 
   @override
   Widget build(BuildContext context) {
@@ -107,19 +118,75 @@ class _TicketView extends StatelessWidget {
                           style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500, color: colors.primary),
                         ),
                         const SizedBox(height: 10),
-                        ticket.technicianId != ''
-                            ? Padding(
-                              padding: const EdgeInsets.only(top: 7, left: 7, bottom: 7),
-                              child: Text(
-                                  ticket.technicianId,
-                                  style: TextStyle(fontSize: 17, color: colors.primary),
-                                ),
-                            )
-                            : FilledButton.tonal(
-                                style: ButtonStyle(visualDensity: VisualDensity.compact),
-                                onPressed: () {},
-                                child: const Text('Asignar técnico'),
-                              ),
+                        FilledButton.tonalIcon(
+                          style: ButtonStyle(
+                            visualDensity: VisualDensity.compact,
+                          ),
+                          onPressed: () async {
+                            final selectedTech = await showDialog<User>(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text('Seleccionar técnico'),
+                                  content: SizedBox(
+                                    width: double.maxFinite,
+                                    child: ListView.separated(
+                                      separatorBuilder: (_, __) => const Divider(),
+                                      shrinkWrap: true,
+                                      itemCount: users.length,
+                                      itemBuilder: (_, i) {
+                                        final user = users[i];
+                                        return ListTile(
+                                          visualDensity: VisualDensity.compact,
+                                          leading: const Icon(Icons.person),
+                                          title: Text(user.name),
+                                          onTap: () {
+                                            Navigator.pop(context, user); // Retorna el técnico seleccionado
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                            if (selectedTech != null) {
+                              // Aquí podrías hacer una acción, por ejemplo:
+                              // ref.read(ticketProvider.notifier).assignTechnician(ticket.id, selectedTech.id);
+                            }
+                          },
+                          // onPressed: () async {
+                          //   final selectedTech = await showModalBottomSheet<User>(
+                          //     context: context,
+                          //     shape: const RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                          //     ),
+                          //     builder: (context) {
+                          //       return ListView.separated(
+                          //         padding: const EdgeInsets.all(16),
+                          //         itemCount: users.length,
+                          //         separatorBuilder: (_, __) => const Divider(),
+                          //         itemBuilder: (_, i) {
+                          //           final user = users[i];
+                          //           return ListTile(
+                          //             leading: const Icon(Icons.person),
+                          //             title: Text(user.name),
+                          //             onTap: () => Navigator.pop(context, user),
+                          //           );
+                          //         },
+                          //       );
+                          //     },
+                          //   );
+
+                          //   if (selectedTech != null) {
+                          //     // Asignar técnico al ticket
+                          //   }
+                          // },
+                          icon: Icon(Icons.person),
+                          label: technician != null
+                              ? Text(technician!.name)
+                              : const Text('Asignar técnico'),
+                        ),
                       ],
                     ),
                   ),

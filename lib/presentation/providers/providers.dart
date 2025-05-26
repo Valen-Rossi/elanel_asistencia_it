@@ -5,3 +5,5 @@ export 'tickets/resolved_tickets_provider.dart';
 export 'tickets/ticket_info_provider.dart';
 export 'tickets/tickets_providers.dart';
 export 'tickets/tickets_repository_provider.dart';
+export 'users/users_provider.dart';
+export 'users/users_repository_provider.dart';

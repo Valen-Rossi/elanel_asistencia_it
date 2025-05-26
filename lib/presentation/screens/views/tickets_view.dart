@@ -20,6 +20,7 @@ class TicketsViewState extends ConsumerState<TicketsView> {
     super.initState();
     
     ref.read(recentTicketsProvider.notifier).loadTickets();
+    ref.read(usersProvider.notifier).loadUsers();
 
   }
 

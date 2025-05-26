@@ -1,7 +1,7 @@
 import 'package:elanel_asistencia_it/domain/entities/ticket.dart';
 
 
-abstract class TicketsDatasource {
+abstract class ITicketsDatasource {
 
   Future<List<Ticket>> getTickets();
   Future<void> addTicket(Ticket ticket);

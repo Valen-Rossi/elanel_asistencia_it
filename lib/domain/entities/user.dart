@@ -1,8 +1,10 @@
+enum UserRole { admin, client, technician }
+
 class User {
   final String id;
   final String name;
   final String email;
-  final String role; // admin, client, etc.
+  final UserRole role; 
 
   User({
     required this.id,

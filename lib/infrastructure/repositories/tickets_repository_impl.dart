@@ -3,9 +3,9 @@ import 'package:elanel_asistencia_it/domain/entities/ticket.dart';
 import 'package:elanel_asistencia_it/domain/repositories/tickets_repository.dart';
 
 
-class TicketsRepositoryImpl extends TicketsRepository {
+class TicketsRepositoryImpl extends ITicketsRepository {
 
-  final TicketsDatasource datasource;
+  final ITicketsDatasource datasource;
 
   TicketsRepositoryImpl(this.datasource);
   
