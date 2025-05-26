@@ -1,29 +1,55 @@
+import 'package:elanel_asistencia_it/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class InventaryView extends StatelessWidget {
+class InventaryView extends ConsumerStatefulWidget {
 
   static const name = 'inventary-view';
 
   const InventaryView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('InventaryView'),
-      ),
-      body: const _InventaryViewView(),
-    );
-  }
+  InventaryViewState createState() => InventaryViewState();
 }
 
-class _InventaryViewView extends StatelessWidget {
- const _InventaryViewView();
+class InventaryViewState extends ConsumerState<InventaryView> {
 
- @override
- Widget build(BuildContext context) {
-  return const Center(
-    child: Text('InventaryViewView'),
-  );
+  @override
+  void initState() {
+    super.initState();
+
+    ref.read(productsProvider.notifier).loadProducts();
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    final products = ref.watch(productsProvider);
+    
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          
+        },
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add),
+      ),
+      appBar: AppBar(
+        title: const Text('Inventario'),
+      ),
+      body: products.isEmpty
+        ? const Center(child: CircularProgressIndicator())
+        : ListView.builder(
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              final product = products[index];
+              return ListTile(
+                title: Text(product.name),
+                subtitle: Text(product.type.toString()),
+              );
+            },
+          ),
+    );
  }
 }
