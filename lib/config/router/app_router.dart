@@ -58,6 +58,11 @@ final appRouter = GoRouter(
         builder: (context, state) => const NewFAQScreen(),
       ),
 
+      GoRoute(
+        path: '/new-product',
+        builder: (context, state) => const NewProductScreen(),
+      ),
+
     ],
 
 );

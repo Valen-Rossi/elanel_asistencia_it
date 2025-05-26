@@ -1,6 +1,7 @@
 import 'package:elanel_asistencia_it/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class InventaryView extends ConsumerStatefulWidget {
 
@@ -30,7 +31,7 @@ class InventaryViewState extends ConsumerState<InventaryView> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          
+          context.push('/new-product');
         },
         shape: const CircleBorder(),
         child: const Icon(Icons.add),
