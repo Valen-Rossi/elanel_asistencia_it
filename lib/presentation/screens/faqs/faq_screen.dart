@@ -84,6 +84,7 @@ class _InfoFAQ extends StatelessWidget {
 
           MarkdownBody(
             data: faq.description,
+            selectable: true,
             styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
               p: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
