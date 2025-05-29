@@ -28,13 +28,13 @@ final appRouter = GoRouter(
               ),
 
               GoRoute(
-                path: "product/:id",
-                name: ProductScreen.name,
+                path: "device/:id",
+                name: DeviceScreen.name,
                 builder: (context, state) {
 
-                  final productId = state.pathParameters['id']?? '';
+                  final deviceId = state.pathParameters['id']?? '';
 
-                  return ProductScreen(productId: productId);
+                  return DeviceScreen(deviceId: deviceId);
                 }
               ),
 
@@ -81,8 +81,8 @@ final appRouter = GoRouter(
       ),
 
       GoRoute(
-        path: '/new-product',
-        builder: (context, state) => const NewProductScreen(),
+        path: '/new-device',
+        builder: (context, state) => const NewDeviceScreen(),
       ),
 
     ],

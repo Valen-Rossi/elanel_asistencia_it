@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:elanel_asistencia_it/domain/entities/product.dart';
+import 'package:elanel_asistencia_it/domain/entities/device.dart';
 import 'package:elanel_asistencia_it/presentation/providers/providers.dart';
 
-class ProductScreen extends ConsumerWidget {
-  static const name = 'product-screen';
-  final String productId;
+class DeviceScreen extends ConsumerWidget {
+  static const name = 'device-screen';
+  final String deviceId;
 
-  const ProductScreen({super.key, required this.productId});
+  const DeviceScreen({super.key, required this.deviceId});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final Product product = ref.watch(productByIdProvider(productId));
+    final Device device = ref.watch(deviceByIdProvider(deviceId));
     
     final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Detalle del producto',
+          'Detalle del Dispositivo',
           style: TextStyle(
               color: colors.primary,
               fontSize: 22,
@@ -26,17 +26,17 @@ class ProductScreen extends ConsumerWidget {
           ),
         ),
       ),
-      body: _ProductView(product: product),
+      body: _DeviceView(device: device),
     );
   }
 }
 
-class _ProductView extends StatelessWidget {
-  const _ProductView({
-    required this.product, 
+class _DeviceView extends StatelessWidget {
+  const _DeviceView({
+    required this.device, 
   });
 
-  final Product product;
+  final Device device;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class _ProductView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
 
-                _InfoProduct(product: product),
+                _InfoDevice(device: device),
 
                 const SizedBox(height: 20),
 
@@ -57,12 +57,12 @@ class _ProductView extends StatelessWidget {
   }
 }
 
-class _InfoProduct extends StatelessWidget {
-  const _InfoProduct({
-    required this.product,
+class _InfoDevice extends StatelessWidget {
+  const _InfoDevice({
+    required this.device,
   });
 
-  final Product product;
+  final Device device;
 
   @override
   Widget build(BuildContext context) {
@@ -87,33 +87,33 @@ class _InfoProduct extends StatelessWidget {
             child: Icon(
               color: colors.primary,
               size: 57,
-              product.type== ProductType.laptop
+              device.type== DeviceType.laptop
               ? Icons.laptop_rounded
-              : product.type== ProductType.phone
+              : device.type== DeviceType.phone
               ? Icons.smartphone_rounded
-              : product.type== ProductType.scanner
+              : device.type== DeviceType.scanner
               ? Icons.adf_scanner_rounded
-              : product.type== ProductType.printer
+              : device.type== DeviceType.printer
               ? Icons.print_rounded
-              : product.type== ProductType.monitor
+              : device.type== DeviceType.monitor
               ? Icons.monitor
-              : product.type== ProductType.desktop
+              : device.type== DeviceType.desktop
               ? Icons.desktop_mac_rounded
-              : product.type== ProductType.keyboard
+              : device.type== DeviceType.keyboard
               ? Icons.keyboard
-              : product.type== ProductType.accessControl
+              : device.type== DeviceType.accessControl
               ? Icons.person
-              : product.type== ProductType.router
+              : device.type== DeviceType.router
               ? Icons.router
-              : product.type== ProductType.webcam
+              : device.type== DeviceType.webcam
               ? Icons.videocam
-              : product.type== ProductType.server
+              : device.type== DeviceType.server
               ? Icons.dns
-              : product.type== ProductType.tablet
+              : device.type== DeviceType.tablet
               ? Icons.tablet_mac_rounded
-              : product.type== ProductType.projector
+              : device.type== DeviceType.projector
               ? Icons.fit_screen_rounded
-              : product.type== ProductType.speaker
+              : device.type== DeviceType.speaker
               ? Icons.speaker
               :Icons.devices_other_outlined
             ),
@@ -122,7 +122,7 @@ class _InfoProduct extends StatelessWidget {
           const SizedBox(height: 7),
     
           Text(
-            product.name,
+            device.name,
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w700,
@@ -132,7 +132,7 @@ class _InfoProduct extends StatelessWidget {
           const SizedBox(height: 5),
     
           Text(
-            'ID: ${product.id} - ${product.type.name}',
+            'ID: ${device.id} - ${device.type.name}',
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w400,

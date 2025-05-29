@@ -1,4 +1,4 @@
-enum ProductType {
+enum DeviceType {
   laptop,
   phone,
   tablet,
@@ -17,11 +17,11 @@ enum ProductType {
   accessControl, // Relojes de ingreso, biométricos, etc.
   other,        // Para lo que no encaje en ninguna categoría
 }
-class Product {
+class Device {
   final String id;
   final String name;
-  final ProductType type;
-  Product({
+  final DeviceType type;
+  Device({
     required this.id,
     required this.name,
     required this.type,

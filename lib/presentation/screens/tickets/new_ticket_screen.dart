@@ -100,7 +100,7 @@ class _NewTicketViewState extends ConsumerState<_NewTicketView> {
                 status: TicketStatus.newTicket,
                 priority: TicketPriority.low,
                 category: '',
-                productId: '',
+                deviceId: '',
                 technicianId: '',
                 createdAt: DateTime.now(),
               );

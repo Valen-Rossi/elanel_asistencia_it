@@ -19,7 +19,7 @@ class Ticket {
   final TicketStatus status;
   final TicketPriority priority;
   final String category;
-  final String productId;
+  final String deviceId;
   final String technicianId;
   final DateTime createdAt;
 
@@ -30,7 +30,7 @@ class Ticket {
     required this.status,
     required this.priority,
     required this.category,
-    required this.productId,
+    required this.deviceId,
     required this.technicianId,
     required this.createdAt,
   });

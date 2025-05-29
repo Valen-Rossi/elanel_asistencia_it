@@ -20,20 +20,20 @@ class InventaryViewState extends ConsumerState<InventaryView> {
   void initState() {
     super.initState();
 
-    ref.read(productsProvider.notifier).loadProducts();
+    ref.read(devicesProvider.notifier).loadDevices();
 
   }
 
   @override
   Widget build(BuildContext context) {
 
-    final products = ref.watch(productsProvider);
+    final devices = ref.watch(devicesProvider);
     final colors = Theme.of(context).colorScheme;
     
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.push('/new-product');
+          context.push('/new-device');
         },
         shape: const CircleBorder(),
         child: const Icon(Icons.add),
@@ -47,15 +47,15 @@ class InventaryViewState extends ConsumerState<InventaryView> {
           ),
         ),
       ),
-      body: products.isEmpty
+      body: devices.isEmpty
         ? const Center(child: CircularProgressIndicator())
         : ListView.builder(
-            itemCount: products.length,
+            itemCount: devices.length,
             itemBuilder: (context, index) {
 
-              final product = products[index];
+              final device = devices[index];
               
-              return ProductCard(product: product);
+              return DeviceCard(device: device);
             },
           ),
     );

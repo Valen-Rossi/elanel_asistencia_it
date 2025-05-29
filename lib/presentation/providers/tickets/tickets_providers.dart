@@ -42,7 +42,7 @@ class TicketsNotifier extends StateNotifier<List<Ticket>> {
     isLoading = true;
     
     await addTicket(ticket);
-    await loadTickets();
+    state = [ticket, ...state];
     
     isLoading = false;
   }

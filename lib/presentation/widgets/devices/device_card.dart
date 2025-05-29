@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:elanel_asistencia_it/domain/entities/product.dart';
+import 'package:elanel_asistencia_it/domain/entities/device.dart';
 
-class ProductCard extends StatelessWidget {
-  const ProductCard({
+class DeviceCard extends StatelessWidget {
+  const DeviceCard({
     super.key,
-    required this.product,
+    required this.device,
   });
 
-  final Product product;
+  final Device device;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class ProductCard extends StatelessWidget {
         color: colors.onInverseSurface,
         borderRadius: BorderRadius.circular(10),
         child: InkWell(
-          onTap: () => context.push('/product/${product.id}'),
+          onTap: () => context.push('/device/${device.id}'),
           highlightColor: colors.primary.withAlpha(70),
           splashColor: colors.primary.withAlpha(50),
           borderRadius: BorderRadius.circular(10),
@@ -31,33 +31,33 @@ class ProductCard extends StatelessWidget {
               children: [
 
                 Icon(
-                  product.type== ProductType.laptop
+                  device.type== DeviceType.laptop
                   ? Icons.laptop_rounded
-                  : product.type== ProductType.phone
+                  : device.type== DeviceType.phone
                   ? Icons.smartphone_rounded
-                  : product.type== ProductType.scanner
+                  : device.type== DeviceType.scanner
                   ? Icons.adf_scanner_rounded
-                  : product.type== ProductType.printer
+                  : device.type== DeviceType.printer
                   ? Icons.print_rounded
-                  : product.type== ProductType.monitor
+                  : device.type== DeviceType.monitor
                   ? Icons.monitor
-                  : product.type== ProductType.desktop
+                  : device.type== DeviceType.desktop
                   ? Icons.desktop_mac_rounded
-                  : product.type== ProductType.keyboard
+                  : device.type== DeviceType.keyboard
                   ? Icons.keyboard
-                  : product.type== ProductType.accessControl
+                  : device.type== DeviceType.accessControl
                   ? Icons.person
-                  : product.type== ProductType.router
+                  : device.type== DeviceType.router
                   ? Icons.router
-                  : product.type== ProductType.webcam
+                  : device.type== DeviceType.webcam
                   ? Icons.videocam
-                  : product.type== ProductType.server
+                  : device.type== DeviceType.server
                   ? Icons.dns
-                  : product.type== ProductType.tablet
+                  : device.type== DeviceType.tablet
                   ? Icons.tablet_mac_rounded
-                  : product.type== ProductType.projector
+                  : device.type== DeviceType.projector
                   ? Icons.fit_screen_rounded
-                  : product.type== ProductType.speaker
+                  : device.type== DeviceType.speaker
                   ? Icons.speaker
                   :Icons.devices_other_outlined
                 ),
@@ -71,21 +71,21 @@ class ProductCard extends StatelessWidget {
                     children: [
                   
                       Text(
-                        product.name,
+                        device.name,
                         style: const TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
 
-                      Text("ID: ${product.id}")
+                      Text("ID: ${device.id}")
                   
                     ],
                   ),
                 ),
 
                 Text(
-                  product.type.name,
+                  device.type.name,
                   
                 )
 
