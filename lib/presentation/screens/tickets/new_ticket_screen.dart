@@ -63,7 +63,7 @@ class _NewTicketViewState extends ConsumerState<_NewTicketView> {
             label: 'Título',
             hintText: 'Ejemplo: Problema con impresora',
             icon: Icons.title,
-            onChanged: (value) => ticketTitle = value,
+            onChanged: (value) => ticketTitle = value.trim(),
             validator: (value) {
               if (value == null || value.trim().isEmpty) return 'El título del ticket es requerido';
               if (value.length < 4) return 'El título del ticket debe tener al menos 4 caracteres';
@@ -77,7 +77,7 @@ class _NewTicketViewState extends ConsumerState<_NewTicketView> {
             hintText: 'Describe el problema en detalle',
             icon: Icons.description,
             maxLines: 10,
-            onChanged: (value) => ticketDescription = value,
+            onChanged: (value) => ticketDescription = value.trim(),
             validator: (value) {
               if (value == null || value.trim().isEmpty) return 'La descripción del ticket es requerida';
               if (value.length < 10) return 'La descripción del ticket debe tener al menos 10 caracteres';

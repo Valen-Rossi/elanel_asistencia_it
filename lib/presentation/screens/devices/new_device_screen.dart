@@ -63,7 +63,7 @@ class _NewDeviceViewState extends ConsumerState<_NewDeviceView> {
             label: 'Nombre del Dispositivo',
             hintText: 'Ejemplo: Impresora HP LaserJet',
             icon: Icons.title,
-            onChanged: (value) => deviceName = value,
+            onChanged: (value) => deviceName = value.trim(),
             validator: (value) {
               if (value == null || value.trim().isEmpty) return 'El nombre del dispositivo es requerido';
               if (value.length < 4) return 'El nombre del dispositivo debe tener al menos 4 caracteres';
