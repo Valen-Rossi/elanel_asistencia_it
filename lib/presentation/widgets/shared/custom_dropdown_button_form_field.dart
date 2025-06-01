@@ -32,6 +32,7 @@ class CustomDropdownFormField<T> extends StatelessWidget {
       value: value,
       onChanged: onChanged,
       validator: validator,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,

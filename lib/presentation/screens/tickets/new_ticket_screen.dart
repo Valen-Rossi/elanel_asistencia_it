@@ -44,6 +44,7 @@ class _NewTicketViewState extends ConsumerState<_NewTicketView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String ticketTitle = '';
   String ticketDescription = '';
+  TicketCategory ticketCategory = TicketCategory.hardware;
 
  @override
  Widget build(BuildContext context) {
@@ -86,6 +87,26 @@ class _NewTicketViewState extends ConsumerState<_NewTicketView> {
             },
           ),
 
+          CustomDropdownFormField<TicketCategory>(
+            label: 'Categoría',
+            hint: 'Selecione la categoría del ticket',
+            items: TicketCategory.values
+                .map((category) => DropdownMenuItem(
+                      value: category,
+                      child: Text(category.name),
+                    ))
+                .toList(),
+            onChanged: (value) {
+              if (value != null) {
+                setState(() => ticketCategory = value);
+              }
+            },
+            validator: (value) {
+              if (value == null) return 'La categoría es requerida';
+              return null;
+            },
+          ),
+
           FilledButton.tonalIcon(
             onPressed: () async {
               final isValid = _formKey.currentState!.validate();
@@ -99,7 +120,7 @@ class _NewTicketViewState extends ConsumerState<_NewTicketView> {
                 description: ticketDescription,
                 status: TicketStatus.newTicket,
                 priority: TicketPriority.low,
-                category: TicketCategory.hardware,
+                category: ticketCategory,
                 otherCaregory: '',
                 deviceId: '',
                 technicianId: '',

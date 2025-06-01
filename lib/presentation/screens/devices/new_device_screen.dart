@@ -63,11 +63,30 @@ class _NewDeviceViewState extends ConsumerState<_NewDeviceView> {
             label: 'Nombre del Dispositivo',
             hintText: 'Ejemplo: Impresora HP LaserJet',
             icon: Icons.title,
+            textCapitalization: TextCapitalization.words,
             onChanged: (value) => deviceName = value.trim(),
             validator: (value) {
               if (value == null || value.trim().isEmpty) return 'El nombre del dispositivo es requerido';
               if (value.length < 4) return 'El nombre del dispositivo debe tener al menos 4 caracteres';
               if (value.length > 20) return 'El nombre del dispositivo no puede tener más de 20 caracteres';
+              return null;
+            },
+          ),
+
+          CustomDropdownFormField<DeviceType>(
+            label: 'Tipo de Dispositivo',
+            hint: 'Seleccione el tipo de dispositivo',
+            items: DeviceType.values
+                .map((type) => DropdownMenuItem(
+                      value: type,
+                      child: Text(type.name),
+                    ))
+                .toList(),
+            onChanged: (value) {
+              if (value != null) setState(() => deviceType = value);
+            },
+            validator: (value) {
+              if (value == null) return 'El tipo de dispositivo es obligatorio';
               return null;
             },
           ),
