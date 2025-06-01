@@ -91,27 +91,31 @@ class NewFAQScreenState extends ConsumerState<NewFAQScreen> {
                 },
               ),
               
-              CustomDropdownFormField<FAQType>(
-                label: 'Tipo de problema',
-                hint: 'Elija el tipo de problema',
-                items: FAQType.values.map((type) {
-                  return DropdownMenuItem(
-                    value: type,
-                    child: Text(type.name[0].toUpperCase() + type.name.substring(1)),
-                  );
-                }).toList(),
-                validator: (value) {
-                  if (value == null) return 'El tipo de problema es obligatorio';
-                  return null;
-                },
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() {
-                      faqType = value;
-                    });
-                  }
-                },
-                ),
+            CustomDropdownFormField<FAQType>(
+              label: 'Tipo de problema',
+              hint: 'Elija el tipo de problema',
+              // prefixIcon: Icons.category,
+              items: FAQType.values.map((type) {
+                return DropdownMenuItem(
+                  value: type,
+                  child: Text(
+                    type.name[0].toUpperCase() + type.name.substring(1),
+                  ),
+                );
+              }).toList(),
+              validator: (value) {
+                if (value == null) return 'El tipo de problema es obligatorio';
+                return null;
+              },
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() {
+                    faqType = value;
+                  });
+                }
+              },
+            ),
+
 
 
               FilledButton.tonalIcon(
