@@ -83,7 +83,9 @@ class _NewDeviceViewState extends ConsumerState<_NewDeviceView> {
               final newDevice = Device(
                 id: DateTime.now().millisecondsSinceEpoch.toString(), // ejemplo de id temporal
                 name: deviceName,
-                type: deviceType
+                type: deviceType, 
+                ticketCount: 0, 
+                lastMaintenance: DateTime.now(),
               );
 
               await ref

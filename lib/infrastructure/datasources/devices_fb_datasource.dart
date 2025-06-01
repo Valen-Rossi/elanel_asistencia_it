@@ -9,16 +9,22 @@ class DevicesFbDatasource extends IDevicesDatasource {
       id: '001',
       name: 'Laptop Dell XPS 13',
       type: DeviceType.laptop,
+      ticketCount: 7,
+      lastMaintenance: DateTime.now(),
     ),
     Device(
       id: '002',
       name: 'Smartphone Samsung Galaxy S21',
       type: DeviceType.phone,
+      ticketCount: 11,
+      lastMaintenance: DateTime.now().subtract(const Duration(hours: 2)),
     ),
     Device(
       id: '003',
       name: 'Monitor LG UltraWide 34"',
       type: DeviceType.monitor,
+      ticketCount: 22,
+      lastMaintenance: DateTime.now().subtract(const Duration(days: 8)),
     ),
   ];
 

@@ -97,18 +97,14 @@ class _InfoDevice extends StatelessWidget {
               ? Icons.print_rounded
               : device.type== DeviceType.monitor
               ? Icons.monitor
-              : device.type== DeviceType.desktop
+              : device.type== DeviceType.desktopPC
               ? Icons.desktop_mac_rounded
               : device.type== DeviceType.keyboard
               ? Icons.keyboard
-              : device.type== DeviceType.accessControl
-              ? Icons.person
               : device.type== DeviceType.router
               ? Icons.router
-              : device.type== DeviceType.webcam
-              ? Icons.videocam
-              : device.type== DeviceType.server
-              ? Icons.dns
+              : device.type== DeviceType.ups
+              ? Icons.electric_bolt
               : device.type== DeviceType.tablet
               ? Icons.tablet_mac_rounded
               : device.type== DeviceType.projector

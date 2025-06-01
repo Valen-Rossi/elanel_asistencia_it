@@ -1,15 +1,12 @@
 enum TicketStatus { newTicket, inProgress, assigned, resolved }
 enum TicketPriority { low, medium, high }
-// enum TicketCategory {
-//   hardware,
-//   software,
-//   network,        // Problemas de conexión, Wi-Fi, VPN, etc.
-//   access,         // Problemas de inicio de sesión, permisos, cuentas bloqueadas
-//   peripheral,     // Impresoras, teclados, escáneres, etc.
-//   configuration,  // Malas configuraciones, instalaciones, ajustes de sistema
-//   security,       // Antivirus, incidentes sospechosos, bloqueo de contenido
-//   other,          // Casos especiales
-// }
+enum TicketCategory {
+  hardware,
+  software,
+  account,         // Problemas de inicio de sesión, permisos, cuentas bloqueadas
+  network,
+  other,          // Casos especiales
+}
 
 
 class Ticket {
@@ -18,7 +15,8 @@ class Ticket {
   final String description;
   final TicketStatus status;
   final TicketPriority priority;
-  final String category;
+  final TicketCategory category;
+  final String otherCaregory;
   final String deviceId;
   final String technicianId;
   final DateTime createdAt;
@@ -30,6 +28,7 @@ class Ticket {
     required this.status,
     required this.priority,
     required this.category,
+    required this.otherCaregory,
     required this.deviceId,
     required this.technicianId,
     required this.createdAt,
