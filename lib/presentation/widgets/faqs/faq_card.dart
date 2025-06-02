@@ -1,3 +1,4 @@
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:elanel_asistencia_it/domain/entities/faq.dart';
@@ -10,9 +11,16 @@ class FAQCard extends StatelessWidget {
 
   final FAQ faq;
 
+  String _markdownToPlainText(String markdown) {
+    // Esto es una forma básica de limpiar el texto, podés hacerlo más avanzado si querés
+    return markdown
+        .replaceAll(RegExp(r'[#*_>`~\[\]\(\)]'), '') // elimina algunos símbolos markdown
+        .replaceAll(RegExp(r'\n+'), ' ') // reemplaza saltos de línea por espacios
+        .trim();
+  }
+
   @override
   Widget build(BuildContext context) {
-
     final colors = Theme.of(context).colorScheme;
 
     return Padding(
@@ -29,7 +37,6 @@ class FAQCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 17),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 5,
               children: [
 
                 Text(
@@ -37,15 +44,17 @@ class FAQCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
-                    color: colors.primary
+                    color: colors.primary,
                   ),
                 ),
-                                
+
+                const SizedBox(height: 5),
+
                 Text(
-                  faq.description,
+                  _markdownToPlainText(faq.description),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                )
+                ),
 
               ],
             ),

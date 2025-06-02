@@ -67,6 +67,11 @@ class NewFAQScreenState extends ConsumerState<NewFAQScreen> {
 
               MarkdownToolbar(
                 useIncludedTextField: false,
+                hideCheckbox: true,
+                hideQuote: true,
+                hideLink: true,
+                hideImage: true,
+                hideHorizontalRule: true,
                 controller: _descriptionController,
                 alignment: WrapAlignment.center,
                 alignCollapseButtonEnd: true,
