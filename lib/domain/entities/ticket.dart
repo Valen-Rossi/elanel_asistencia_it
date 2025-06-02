@@ -1,4 +1,5 @@
-enum TicketStatus { newTicket, inProgress, assigned, resolved }
+import 'package:flutter/material.dart';
+enum TicketStatus { newTicket, inProgress, resolved }
 enum TicketPriority { low, medium, high }
 enum TicketCategory {
   hardware,
@@ -53,5 +54,62 @@ extension TicketCopy on Ticket {
       technicianId: technicianId ?? this.technicianId,
       createdAt: createdAt,
     );
+  }
+
+}
+
+extension TicketStatusText on TicketStatus {
+  String get label {
+    switch (this) {
+      case TicketStatus.newTicket:
+        return 'Nuevo';
+      case TicketStatus.inProgress:
+        return 'En curso';
+      case TicketStatus.resolved:
+        return 'Resuelto';
+    }
+  }
+}
+
+extension TicketPriorityText on TicketPriority {
+  String get label {
+    switch (this) {
+      case TicketPriority.low:
+        return 'Baja';
+      case TicketPriority.medium:
+        return 'Media';
+      case TicketPriority.high:
+        return 'Alta';
+    }
+  }
+}
+
+extension TicketCategoryText on TicketCategory {
+  String get label {
+    switch (this) {
+      case TicketCategory.hardware:
+        return 'Hardware';
+      case TicketCategory.software:
+        return 'Software';
+      case TicketCategory.account:
+        return 'Cuenta';
+      case TicketCategory.network:
+        return 'Red';
+      case TicketCategory.other:
+        return 'Otro';
+    }
+  }
+}
+
+extension TicketStatusColor on TicketStatus {
+  Color get color {
+    switch (this) {
+      case TicketStatus.newTicket:
+        return const Color.fromARGB(123, 10, 167, 240);
+      case TicketStatus.inProgress:
+        return const Color.fromARGB(132, 241, 138, 21);
+      case TicketStatus.resolved:
+        return const Color.fromARGB(124, 42, 243, 92);
+    }
   }
 }

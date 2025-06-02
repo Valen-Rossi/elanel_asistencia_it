@@ -93,7 +93,7 @@ class _NewTicketViewState extends ConsumerState<_NewTicketView> {
             items: TicketCategory.values
                 .map((category) => DropdownMenuItem(
                       value: category,
-                      child: Text(category.name),
+                      child: Text(category.label),
                     ))
                 .toList(),
             onChanged: (value) {

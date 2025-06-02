@@ -1,5 +1,4 @@
 import 'package:elanel_asistencia_it/domain/entities/user.dart';
-import 'package:elanel_asistencia_it/presentation/providers/users/user_info_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timeago_flutter/timeago_flutter.dart';
@@ -310,14 +309,10 @@ class _InfoTicket extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              color: ticket.status == TicketStatus.newTicket
-                  ? const Color.fromARGB(123, 10, 167, 240)
-                  : ticket.status == TicketStatus.inProgress
-                      ? const Color.fromARGB(132, 241, 138, 21)
-                      : const Color.fromARGB(124, 42, 243, 92),
+              color: ticket.status.color,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Text(ticket.status.name),
+            child: Text(ticket.status.label),
           ),
     
         ],

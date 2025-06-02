@@ -104,7 +104,7 @@ class NewFAQScreenState extends ConsumerState<NewFAQScreen> {
                 return DropdownMenuItem(
                   value: type,
                   child: Text(
-                    type.name[0].toUpperCase() + type.name.substring(1),
+                    type.label,
                   ),
                 );
               }).toList(),

@@ -79,7 +79,7 @@ class _NewDeviceViewState extends ConsumerState<_NewDeviceView> {
             items: DeviceType.values
                 .map((type) => DropdownMenuItem(
                       value: type,
-                      child: Text(type.name),
+                      child: Text(type.label),
                     ))
                 .toList(),
             onChanged: (value) {

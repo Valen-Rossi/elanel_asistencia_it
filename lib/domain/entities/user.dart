@@ -13,3 +13,16 @@ class User {
     required this.role,
   });
 }
+// ===== UserRole Extensions =====
+extension UserRoleLabel on UserRole {
+  String get label {
+    switch (this) {
+      case UserRole.admin:
+        return 'Administrador';
+      case UserRole.client:
+        return 'Cliente';
+      case UserRole.technician:
+        return 'Técnico';
+    }
+  }
+}

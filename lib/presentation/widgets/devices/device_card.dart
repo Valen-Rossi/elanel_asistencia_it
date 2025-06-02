@@ -30,31 +30,7 @@ class DeviceCard extends StatelessWidget {
             child: Row(
               children: [
 
-                Icon(
-                  device.type== DeviceType.laptop
-                  ? Icons.laptop_rounded
-                  : device.type== DeviceType.phone
-                  ? Icons.smartphone_rounded
-                  : device.type== DeviceType.scanner
-                  ? Icons.adf_scanner_rounded
-                  : device.type== DeviceType.printer
-                  ? Icons.print_rounded
-                  : device.type== DeviceType.monitor
-                  ? Icons.monitor
-                  : device.type== DeviceType.desktopPC
-                  ? Icons.desktop_mac_rounded
-                  : device.type== DeviceType.keyboard
-                  ? Icons.keyboard
-                  : device.type== DeviceType.router
-                  ? Icons.router
-                  : device.type== DeviceType.tablet
-                  ? Icons.tablet_mac_rounded
-                  : device.type== DeviceType.projector
-                  ? Icons.fit_screen_rounded
-                  : device.type== DeviceType.speaker
-                  ? Icons.speaker
-                  :Icons.devices_other_outlined
-                ),
+                Icon(device.type.icon),
                 
                 SizedBox(width: 17),
 
@@ -79,7 +55,7 @@ class DeviceCard extends StatelessWidget {
                 ),
 
                 Text(
-                  device.type.name,
+                  device.type.label,
                   
                 )
 

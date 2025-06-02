@@ -87,31 +87,7 @@ class _InfoDevice extends StatelessWidget {
             child: Icon(
               color: colors.primary,
               size: 57,
-              device.type== DeviceType.laptop
-              ? Icons.laptop_rounded
-              : device.type== DeviceType.phone
-              ? Icons.smartphone_rounded
-              : device.type== DeviceType.scanner
-              ? Icons.adf_scanner_rounded
-              : device.type== DeviceType.printer
-              ? Icons.print_rounded
-              : device.type== DeviceType.monitor
-              ? Icons.monitor
-              : device.type== DeviceType.desktopPC
-              ? Icons.desktop_mac_rounded
-              : device.type== DeviceType.keyboard
-              ? Icons.keyboard
-              : device.type== DeviceType.router
-              ? Icons.router
-              : device.type== DeviceType.ups
-              ? Icons.electric_bolt
-              : device.type== DeviceType.tablet
-              ? Icons.tablet_mac_rounded
-              : device.type== DeviceType.projector
-              ? Icons.fit_screen_rounded
-              : device.type== DeviceType.speaker
-              ? Icons.speaker
-              :Icons.devices_other_outlined
+              device.type.icon
             ),
           ),
 
@@ -128,7 +104,7 @@ class _InfoDevice extends StatelessWidget {
           const SizedBox(height: 5),
     
           Text(
-            'ID: ${device.id} - ${device.type.name}',
+            'ID: ${device.id} - ${device.type.label}',
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w400,
