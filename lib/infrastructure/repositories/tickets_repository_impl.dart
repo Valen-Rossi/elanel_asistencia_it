@@ -28,7 +28,7 @@ class TicketsRepositoryImpl extends ITicketsRepository {
   @override
   Future<void> updateTicket(Ticket ticket) {
     // TODO: implement updateTicket
-    throw UnimplementedError();
+    return datasource.updateTicket(ticket);
   }
   
 }

@@ -33,4 +33,25 @@ class Ticket {
     required this.technicianId,
     required this.createdAt,
   });
+
+}
+
+extension TicketCopy on Ticket {
+  Ticket copyWith({
+    String? technicianId,
+    // otros campos si querés
+  }) {
+    return Ticket(
+      id: id,
+      title: title,
+      description: description,
+      status: status,
+      priority: priority,
+      category: category,
+      otherCaregory: otherCaregory,
+      deviceId: deviceId,
+      technicianId: technicianId ?? this.technicianId,
+      createdAt: createdAt,
+    );
+  }
 }

@@ -121,9 +121,12 @@ class TicketsFbDatasource extends ITicketsDatasource {
   }
 
   @override
-  Future<void> updateTicket(Ticket ticket) {
+  Future<void> updateTicket(Ticket ticket) async{
     // TODO: implement updateTicket
-    throw UnimplementedError();
+    final index = tickets.indexWhere((t) => t.id == ticket.id);
+    if (index != -1) {
+      tickets[index] = ticket;
+    }
   }
   
 }

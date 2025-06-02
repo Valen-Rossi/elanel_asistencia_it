@@ -40,11 +40,11 @@ class TicketScreen extends ConsumerWidget {
   }
 }
 
-class _TicketView extends StatelessWidget {
+class _TicketView extends ConsumerStatefulWidget {
   const _TicketView({
-    required this.ticket, 
-    required this.users, 
-    this.technician, 
+    required this.ticket,
+    required this.users,
+    this.technician,
   });
 
   final Ticket ticket;
@@ -52,8 +52,12 @@ class _TicketView extends StatelessWidget {
   final User? technician;
 
   @override
-  Widget build(BuildContext context) {
+  ConsumerState<_TicketView> createState() => _TicketViewState();
+}
 
+class _TicketViewState extends ConsumerState<_TicketView> {
+  @override
+  Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
 
@@ -63,7 +67,7 @@ class _TicketView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
 
-                _InfoTicket(size: size, ticket: ticket),
+                _InfoTicket(size: size, ticket: widget.ticket),
 
                 const SizedBox(height: 20),
 
@@ -100,7 +104,7 @@ class _TicketView extends StatelessWidget {
                       backgroundColor: colors.surface,
                       child: Icon(Icons.account_circle,
                         size: 32,
-                        color: ticket.technicianId != '' 
+                        color: widget.ticket.technicianId != '' 
                           ? colors.primary  
                           : colors.secondary
                       ),
@@ -133,16 +137,14 @@ class _TicketView extends StatelessWidget {
                                     child: ListView.separated(
                                       separatorBuilder: (_, __) => const Divider(),
                                       shrinkWrap: true,
-                                      itemCount: users.length,
+                                      itemCount: widget.users.length,
                                       itemBuilder: (_, i) {
-                                        final user = users[i];
+                                        final user = widget.users[i];
                                         return ListTile(
                                           visualDensity: VisualDensity.compact,
                                           leading: const Icon(Icons.person),
                                           title: Text(user.name),
-                                          onTap: () {
-                                            Navigator.pop(context, user); // Retorna el técnico seleccionado
-                                          },
+                                          onTap: () => Navigator.pop(context, user),
                                         );
                                       },
                                     ),
@@ -150,41 +152,21 @@ class _TicketView extends StatelessWidget {
                                 );
                               },
                             );
+
                             if (selectedTech != null) {
-                              // Aquí podrías hacer una acción, por ejemplo:
-                              // ref.read(ticketProvider.notifier).assignTechnician(ticket.id, selectedTech.id);
+                              final updatedTicket =
+                                  widget.ticket.copyWith(technicianId: selectedTech.id);
+
+                              // Actualiza el ticket en el provider
+                              await ref
+                                  .read(recentTicketsProvider.notifier)
+                                  .updateTicket(updatedTicket);
                             }
                           },
-                          // onPressed: () async {
-                          //   final selectedTech = await showModalBottomSheet<User>(
-                          //     context: context,
-                          //     shape: const RoundedRectangleBorder(
-                          //       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                          //     ),
-                          //     builder: (context) {
-                          //       return ListView.separated(
-                          //         padding: const EdgeInsets.all(16),
-                          //         itemCount: users.length,
-                          //         separatorBuilder: (_, __) => const Divider(),
-                          //         itemBuilder: (_, i) {
-                          //           final user = users[i];
-                          //           return ListTile(
-                          //             leading: const Icon(Icons.person),
-                          //             title: Text(user.name),
-                          //             onTap: () => Navigator.pop(context, user),
-                          //           );
-                          //         },
-                          //       );
-                          //     },
-                          //   );
 
-                          //   if (selectedTech != null) {
-                          //     // Asignar técnico al ticket
-                          //   }
-                          // },
                           icon: Icon(Icons.person),
-                          label: technician != null
-                              ? Text(technician!.name)
+                          label: widget.technician != null
+                              ? Text(widget.technician!.name)
                               : const Text('Asignar técnico'),
                         ),
                       ],
@@ -201,7 +183,7 @@ class _TicketView extends StatelessWidget {
                       backgroundColor: colors.surface,
                       child: Icon(Icons.timelapse,
                         size: 32,
-                        color: (ticket.status == TicketStatus.inProgress || ticket.status == TicketStatus.resolved)
+                        color: (widget.ticket.status == TicketStatus.inProgress || widget.ticket.status == TicketStatus.resolved)
                             ? colors.primary
                             : colors.secondary),
                     ),
@@ -215,7 +197,7 @@ class _TicketView extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
-                        color: (ticket.status == TicketStatus.inProgress || ticket.status == TicketStatus.resolved)
+                        color: (widget.ticket.status == TicketStatus.inProgress || widget.ticket.status == TicketStatus.resolved)
                             ? colors.primary
                             : colors.secondary,
                       ),
@@ -233,7 +215,7 @@ class _TicketView extends StatelessWidget {
                       backgroundColor: colors.surface,
                       child: Icon(Icons.check_circle,
                         size: 32,
-                        color: ticket.status == TicketStatus.resolved
+                        color: widget.ticket.status == TicketStatus.resolved
                             ? colors.primary
                             : colors.secondary),
                     ),
@@ -246,7 +228,7 @@ class _TicketView extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
-                        color: ticket.status == TicketStatus.resolved
+                        color: widget.ticket.status == TicketStatus.resolved
                             ? colors.primary
                             : colors.secondary,
                       ),
