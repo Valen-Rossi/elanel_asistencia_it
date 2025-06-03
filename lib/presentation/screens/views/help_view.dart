@@ -1,3 +1,4 @@
+import 'package:elanel_asistencia_it/domain/entities/faq.dart';
 import 'package:elanel_asistencia_it/presentation/providers/providers.dart';
 import 'package:elanel_asistencia_it/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +27,9 @@ class HelpViewState extends ConsumerState<HelpView> {
 
   @override
   Widget build(BuildContext context) {
-
-    final faqs = ref.watch(faqsProvider);
+    final faqs = ref.watch(filteredFaqsProvider);
+    final selectedType = ref.watch(faqFilterProvider);
+    final filterNotifier = ref.read(faqFilterProvider.notifier);
     final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
@@ -39,21 +41,55 @@ class HelpViewState extends ConsumerState<HelpView> {
         child: const Icon(Icons.add),
       ),
       appBar: AppBar(
-        title: Text('Preguntas Frecuentes',
+        title: Text(
+          'Preguntas Frecuentes',
           style: TextStyle(
-              color: colors.primary,
-              fontSize: 22,
-              fontWeight: FontWeight.w600,
+            color: colors.primary,
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
           ),
         ),
+        actions: [
+          TextButton(
+            onPressed: () => filterNotifier.state = null,
+            child: const Text('Limpiar filtros'),
+          ),
+          const SizedBox(width: 12),
+        ],
       ),
-      body: ListView.builder(
-        itemCount: faqs.length,
-        itemBuilder: (context, index) {
-          final faq = faqs[index];
-          return FAQCard(faq: faq);
-        },
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            child: CustomDropdownFormField<FAQType?>(
+              label: 'Tipo',
+              value: selectedType,
+              items: [
+                const DropdownMenuItem(value: null, child: Text('Todos')),
+                ...FAQType.values.map((type) => DropdownMenuItem(
+                    value: type, child: Text(type.label))),
+              ],
+              onChanged: (value) => filterNotifier.state = value,
+            ),
+          ),
+          Expanded(
+            child: faqs.isEmpty
+                ? Center(
+                    child: Text(
+                      'No se encontraron preguntas con este filtro.',
+                      style: TextStyle(color: colors.onSurfaceVariant),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: faqs.length,
+                    itemBuilder: (context, index) {
+                      final faq = faqs[index];
+                      return FAQCard(faq: faq);
+                    },
+                  ),
+          ),
+        ],
       ),
-  );
- }
+    );
+  }
 }
