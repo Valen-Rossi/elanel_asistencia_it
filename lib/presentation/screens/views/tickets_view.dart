@@ -63,6 +63,7 @@ class TicketsViewState extends ConsumerState<TicketsView> {
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
               children: [
+
                 Expanded(
                   child: CustomDropdownFormField<TicketStatus?>(
                     label: 'Estado',
@@ -76,7 +77,9 @@ class TicketsViewState extends ConsumerState<TicketsView> {
                         filterNotifier.state.copyWith(status: status),
                   ),
                 ),
+
                 const SizedBox(width: 8),
+
                 Expanded(
                   child: CustomDropdownFormField<TicketPriority?>(
                     label: 'Prioridad',
@@ -90,7 +93,9 @@ class TicketsViewState extends ConsumerState<TicketsView> {
                         filterNotifier.state.copyWith(priority: priority),
                   ),
                 ),
+
                 const SizedBox(width: 8),
+
                 Expanded(
                   child: CustomDropdownFormField<TicketCategory?>(
                     label: 'Categoría',
@@ -107,7 +112,69 @@ class TicketsViewState extends ConsumerState<TicketsView> {
               ],
             ),
           ),
+
+          // debajo del Row de filtros
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () async {
+                      final selectedDate = await showDatePicker(
+                        context: context,
+                        initialDate: filters.fromDate ?? DateTime.now(),
+                        firstDate: DateTime(2020),
+                        lastDate: filters.toDate ?? DateTime.now(),
+                      );
+                      if (selectedDate != null) {
+                        filterNotifier.state = filterNotifier.state.copyWith(fromDate: selectedDate);
+                      }
+                    },
+                    icon: const Icon(Icons.calendar_today_rounded, size: 18),
+                    label: Text(
+                      filters.fromDate != null
+                          ? 'Desde: ${filters.fromDate!.day}/${filters.fromDate!.month}/${filters.fromDate!.year}'
+                          : 'Desde: -',
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () async {
+                      final selectedDate = await showDatePicker(
+                        context: context,
+                        initialDate: filters.toDate ?? DateTime.now(),
+                        firstDate: filters.fromDate ?? DateTime(2020),
+                        lastDate: DateTime.now(),
+                      );
+                      if (selectedDate != null) {
+                        filterNotifier.state = filterNotifier.state.copyWith(toDate: selectedDate);
+                      }
+                    },
+                    icon: const Icon(Icons.event, size: 18),
+                    label: Text(
+                      filters.toDate != null
+                          ? 'Hasta: ${filters.toDate!.day}/${filters.toDate!.month}/${filters.toDate!.year}'
+                          : 'Hasta: -',
+                    ),
+                  ),
+                ),
+                if (filters.fromDate != null || filters.toDate != null)
+                  IconButton(
+                    icon: const Icon(Icons.clear_rounded),
+                    onPressed: () {
+                      filterNotifier.state = filterNotifier.state.copyWith(fromDate: null, toDate: null);
+                    },
+                  ),
+              ],
+            ),
+          ),
+
+
           const SizedBox(height: 10),
+
           Expanded(
             child: filteredTickets.isEmpty
                 ? Center(
