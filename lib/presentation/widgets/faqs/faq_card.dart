@@ -49,19 +49,19 @@ class FAQCard extends StatelessWidget {
                   ),
                 ),
 
-                // Container(
-                //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                //   decoration: BoxDecoration(
-                //     color: faq.type.color,
-                //     borderRadius: BorderRadius.circular(20),
-                //   ),
-                //   child: Text(faq.type.label),
-                // ),
-
                 Text(
                   _markdownToPlainText(faq.description),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
+                ),
+
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: colors.inversePrimary,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(faq.type.label),
                 ),
 
               ],

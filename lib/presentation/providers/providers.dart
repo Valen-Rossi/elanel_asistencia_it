@@ -5,6 +5,7 @@ export 'devices/devices_repository_provider.dart';
 export 'faqs/faq_info_provider.dart';
 export 'faqs/faqs_provider.dart';
 export 'faqs/faqs_repository_provider.dart';
+export 'tickets/filter_tickets_provider.dart';
 export 'tickets/in_progress_tickets_provider.dart';
 export 'tickets/new_tickets_provider.dart';
 export 'tickets/resolved_tickets_provider.dart';

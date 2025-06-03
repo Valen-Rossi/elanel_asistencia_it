@@ -82,6 +82,17 @@ class _InfoFAQ extends StatelessWidget {
 
           const SizedBox(height: 10),
 
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: BoxDecoration(
+              color: colors.inversePrimary,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(faq.type.label),
+          ),
+
+          const SizedBox(height: 10),
+
           MarkdownBody(
             data: faq.description,
             softLineBreak: true,

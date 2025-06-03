@@ -1,85 +1,137 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:animate_do/animate_do.dart';
 
 import 'package:elanel_asistencia_it/presentation/providers/providers.dart';
 import 'package:elanel_asistencia_it/presentation/widgets/widgets.dart';
-import 'package:go_router/go_router.dart';
+import 'package:elanel_asistencia_it/domain/entities/ticket.dart';
 
 class TicketsView extends ConsumerStatefulWidget {
- const TicketsView({super.key});
+  const TicketsView({super.key});
 
   @override
   TicketsViewState createState() => TicketsViewState();
 }
 
 class TicketsViewState extends ConsumerState<TicketsView> {
-
   @override
   void initState() {
     super.initState();
-    
     ref.read(recentTicketsProvider.notifier).loadTickets();
     ref.read(usersProvider.notifier).loadUsers();
-
   }
 
- @override
- Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
+    final filteredTickets = ref.watch(filteredTicketsProvider);
+    final filters = ref.watch(ticketFilterProvider);
+    final filterNotifier = ref.read(ticketFilterProvider.notifier);
+    final colors = Theme.of(context).colorScheme;
 
-  final recentTickets = ref.watch(recentTicketsProvider);
-  final isLoading = ref.watch(recentTicketsProvider.notifier).isLoading;
-  final colors = Theme.of(context).colorScheme;
-  final textTheme = Theme.of(context).textTheme;
-
-  return Scaffold(
-    floatingActionButton: FloatingActionButton(
-      shape: CircleBorder(),
-        onPressed: () {
-          context.push('/new-ticket');
-        },
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
+        onPressed: () => context.push('/new-ticket'),
         child: const Icon(Icons.add),
       ),
-    body: Column(
-      children: [
-    
-        // Todo: Centralizar los estilos de los textos
-    
-        SafeArea(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            alignment: Alignment.centerLeft,
-            child: Text('Tickets recientes',
-              style: TextStyle(
-                color: colors.primary,
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+      body: Column(
+        children: [
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Tickets recientes',
+                      style: TextStyle(
+                        color: colors.primary,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      )),
+                  TextButton(
+                    onPressed: () {
+                      filterNotifier.state = TicketFilterState.empty;
+                    },
+                    child: const Text('Limpiar filtros'),
+                  ),
+                ],
               ),
             ),
           ),
-        ),
-    
-        Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(),
-            physics: const BouncingScrollPhysics(),
-            itemCount: recentTickets.length,
-            itemBuilder: (context, index) {
-          
-              final ticket = recentTickets[index];
-          
-              return FadeIn(
-                delay: Duration(milliseconds: 200+index * 100),
-                child: TicketCard(ticket: ticket),
-              );
-            },
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              children: [
+                Expanded(
+                  child: CustomDropdownFormField<TicketStatus?>(
+                    label: 'Estado',
+                    value: filters.status,
+                    items: [
+                      const DropdownMenuItem(value: null, child: Text('Todos')),
+                      ...TicketStatus.values.map((e) => DropdownMenuItem(
+                          value: e, child: Text(e.label)))
+                    ],
+                    onChanged: (status) => filterNotifier.state =
+                        filterNotifier.state.copyWith(status: status),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: CustomDropdownFormField<TicketPriority?>(
+                    label: 'Prioridad',
+                    value: filters.priority,
+                    items: [
+                      const DropdownMenuItem(value: null, child: Text('Todas')),
+                      ...TicketPriority.values.map((e) => DropdownMenuItem(
+                          value: e, child: Text(e.label)))
+                    ],
+                    onChanged: (priority) => filterNotifier.state =
+                        filterNotifier.state.copyWith(priority: priority),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: CustomDropdownFormField<TicketCategory?>(
+                    label: 'Categoría',
+                    value: filters.category,
+                    items: [
+                      const DropdownMenuItem(value: null, child: Text('Todas')),
+                      ...TicketCategory.values.map((e) => DropdownMenuItem(
+                          value: e, child: Text(e.label)))
+                    ],
+                    onChanged: (category) => filterNotifier.state =
+                        filterNotifier.state.copyWith(category: category),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-    
-        SizedBox(height: 10,),
-    
-      ],
-    ),
-  );
- }
+          const SizedBox(height: 10),
+          Expanded(
+            child: filteredTickets.isEmpty
+                ? Center(
+                    child: Text(
+                      'No se encontraron tickets con estos filtros.',
+                      style: TextStyle(color: colors.onSurfaceVariant),
+                    ),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.symmetric(),
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: filteredTickets.length,
+                    itemBuilder: (context, index) {
+                      final ticket = filteredTickets[index];
+                      return FadeIn(
+                        delay: Duration(milliseconds: 200 + index * 100),
+                        child: TicketCard(ticket: ticket),
+                      );
+                    },
+                  ),
+          ),
+          const SizedBox(height: 10),
+        ],
+      ),
+    );
+  }
 }
