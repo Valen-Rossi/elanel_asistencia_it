@@ -128,13 +128,15 @@ class _NewTicketViewState extends ConsumerState<_NewTicketView> {
             label: 'Buscar por ID de dispositivo',
             hintText: 'Por ejemplo: 001',
             icon: Icons.search_rounded,
-            suffixIcon: IconButton(
+            suffixIcon: _deviceSearchController.text.isNotEmpty
+            ? IconButton(
               icon: const Icon(Icons.clear),
               onPressed: () {
                 _deviceSearchController.clear();
                 setState(() => selectedDevice = null);
               },
-            ),
+            )
+            : null,
             onChanged: (value) {
               final trimmedValue = value.trim();
               if (selectedDevice != null && selectedDevice!.id != trimmedValue) {

@@ -76,23 +76,21 @@ class HelpViewState extends ConsumerState<HelpView> {
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: TextFormField(
+            child: CustomTextFormField(
               controller: _searchController,
-              decoration: InputDecoration(
-                labelText: 'Buscar por título',
-                hintText: 'Ejemplo: impresora',
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: _searchController.text.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _searchController.clear();
-                          ref.read(faqSearchTermProvider.notifier).state = '';
-                          setState(() {}); // Para que se actualice el icono
-                        },
-                      )
-                    : null,
-              ),
+              label: 'Buscar por título',
+              hintText: 'Ejemplo: impresora',
+              icon: Icons.search,
+              suffixIcon: _searchController.text.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        _searchController.clear();
+                        ref.read(faqSearchTermProvider.notifier).state = '';
+                        setState(() {}); // Para que se actualice el icono
+                      },
+                    )
+                  : null,
               onChanged: (value) {
                 ref.read(faqSearchTermProvider.notifier).state = value;
                 setState(() {}); // Actualiza el ícono de borrado
