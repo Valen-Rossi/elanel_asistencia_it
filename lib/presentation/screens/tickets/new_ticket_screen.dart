@@ -1,5 +1,6 @@
 import 'package:elanel_asistencia_it/domain/entities/ticket.dart';
-import 'package:elanel_asistencia_it/presentation/providers/tickets/tickets_providers.dart';
+import 'package:elanel_asistencia_it/domain/entities/device.dart';
+import 'package:elanel_asistencia_it/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 
 import 'package:elanel_asistencia_it/presentation/widgets/widgets.dart';
@@ -41,117 +42,186 @@ class _NewTicketView extends ConsumerStatefulWidget {
 
 class _NewTicketViewState extends ConsumerState<_NewTicketView> {
 
+  @override
+  void initState() {
+    super.initState();
+
+    ref.read(devicesProvider.notifier).loadDevices();
+
+  }
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _deviceSearchController = TextEditingController();
+
   String ticketTitle = '';
   String ticketDescription = '';
   TicketCategory ticketCategory = TicketCategory.hardware;
-
- @override
- Widget build(BuildContext context) {
-
-  final colors = Theme.of(context).colorScheme;
+  Device? selectedDevice;
   bool isLoading = false;
 
-  return SingleChildScrollView(
-    padding: const EdgeInsets.all(20),
-    child: Form(
-      key: _formKey,
-      child: Column(
-        spacing: 20,
-        children: [
-          
-          CustomTextFormField(
-            label: 'Título',
-            hintText: 'Ejemplo: Problema con impresora',
-            icon: Icons.title,
-            onChanged: (value) => ticketTitle = value.trim(),
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) return 'El título del ticket es requerido';
-              if (value.length < 4) return 'El título del ticket debe tener al menos 4 caracteres';
-              if (value.length > 20) return 'El título del ticket no puede tener más de 20 caracteres';
-              return null;
-            },
-          ),
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    final devices = ref.watch(devicesProvider);
 
-          CustomTextFormField(
-            label: 'Descripción',
-            hintText: 'Describe el problema en detalle',
-            icon: Icons.description,
-            maxLines: 10,
-            onChanged: (value) => ticketDescription = value.trim(),
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) return 'La descripción del ticket es requerida';
-              if (value.length < 10) return 'La descripción del ticket debe tener al menos 10 caracteres';
-              if (value.length > 50) return 'La descripción del ticket no puede tener más de 50 caracteres';
-              return null;
-            },
-          ),
+    final List<Device> searchResults = _deviceSearchController.text.trim().isEmpty
+        ? []
+        : devices
+            .where((d) => d.id.contains(_deviceSearchController.text.trim()))
+            .toList();
 
-          CustomDropdownFormField<TicketCategory>(
-            label: 'Categoría',
-            hint: 'Selecione la categoría del ticket',
-            items: TicketCategory.values
-                .map((category) => DropdownMenuItem(
-                      value: category,
-                      child: Text(category.label),
-                    ))
-                .toList(),
-            onChanged: (value) {
-              if (value != null) {
-                setState(() => ticketCategory = value);
-              }
-            },
-            validator: (value) {
-              if (value == null) return 'La categoría es requerida';
-              return null;
-            },
-          ),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          spacing: 15,
+          children: [
 
-          FilledButton.tonalIcon(
-            onPressed: () async {
-              final isValid = _formKey.currentState!.validate();
-              if (!isValid || isLoading) return;
+            CustomTextFormField(
+              label: 'Título',
+              hintText: 'Ejemplo: Problema con impresora',
+              icon: Icons.title,
+              onChanged: (value) => ticketTitle = value.trim(),
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) return 'El título es requerido';
+                if (value.length < 4) return 'Debe tener al menos 4 caracteres';
+                if (value.length > 20) return 'Máximo 20 caracteres';
+                return null;
+              },
+            ),
 
-              setState(() => isLoading = true);
+            CustomTextFormField(
+              label: 'Descripción',
+              hintText: 'Describe el problema',
+              icon: Icons.description,
+              maxLines: 8,
+              onChanged: (value) => ticketDescription = value.trim(),
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) return 'La descripción es requerida';
+                if (value.length < 10) return 'Debe tener al menos 10 caracteres';
+                if (value.length > 50) return 'Máximo 50 caracteres';
+                return null;
+              },
+            ),
 
-              final newTicket = Ticket(
-                id: DateTime.now().millisecondsSinceEpoch.toString(), // ejemplo de id temporal
-                title: ticketTitle,
-                description: ticketDescription,
-                status: TicketStatus.newTicket,
-                priority: TicketPriority.low,
-                category: ticketCategory,
-                otherCaregory: '',
-                deviceId: '',
-                technicianId: '',
-                createdAt: DateTime.now(),
-              );
+            CustomDropdownFormField<TicketCategory>(
+              label: 'Categoría',
+              hint: 'Selecciona una categoría',
+              items: TicketCategory.values
+                  .map((category) => DropdownMenuItem(
+                        value: category,
+                        child: Text(category.label),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() => ticketCategory = value);
+                }
+              },
+              validator: (value) => value == null ? 'La categoría es requerida' : null,
+            ),
 
-              await ref
-                .read(recentTicketsProvider.notifier)
-                .createTicket(newTicket);
+            CustomTextFormField(
+              controller: _deviceSearchController,
+              textInputType: TextInputType.number,
+              label: 'Buscar por ID de dispositivo',
+              hintText: 'Por ejemplo: 001',
+              icon: Icons.search_rounded,
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: () {
+                  _deviceSearchController.clear();
+                  setState(() => selectedDevice = null);
+                },
+              ),
+              onChanged: (value) {
+                final trimmedValue = value.trim();
+                if (selectedDevice != null && selectedDevice!.id != trimmedValue) {
+                  setState(() => selectedDevice = null);
+                }
+                setState(() {});
+              },
+              validator: (_) {
+                if (selectedDevice == null) return 'Debe seleccionar un dispositivo';
+                return null;
+              },
+            ),
+            if (searchResults.isNotEmpty)
+              Container(
+                margin: const EdgeInsets.only(top: 5),
+                decoration: BoxDecoration(
+                  border: Border.all(color: colors.primary),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  children: searchResults.map((device) {
+                    return ListTile(
+                      title: Text(device.name),
+                      subtitle: Text('ID: ${device.id}'),
+                      trailing: Icon(device.type.icon, color: colors.primary),
+                      onTap: () {
+                        setState(() {
+                          selectedDevice = device;
+                          _deviceSearchController.text = device.id;
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
+              ),
 
-              setState(() => isLoading = false);
+            FilledButton.tonalIcon(
+              onPressed: isLoading
+                  ? null
+                  : () async {
+                      final isValid = _formKey.currentState!.validate();
+                      if (!isValid || selectedDevice == null) return;
 
-              if (context.mounted) {
-                // Mostrar snackbar de éxito
-                context.pop(); // volver atrás
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text('Ticket creado con éxito'),
-                    duration: const Duration(seconds: 3),
-                    backgroundColor: colors.primary,
-                  ),
-                );
-              }
-            },
+                      setState(() => isLoading = true);
 
-            label: const Text('Crear Ticket'),
-            icon: const Icon(Icons.add),
-          ),
-      ],
+                      final ticket = Ticket(
+                        id: DateTime.now().millisecondsSinceEpoch.toString(),
+                        title: ticketTitle,
+                        description: ticketDescription,
+                        status: TicketStatus.newTicket,
+                        priority: TicketPriority.low,
+                        category: ticketCategory,
+                        otherCaregory: '',
+                        deviceId: selectedDevice!.id,
+                        technicianId: '',
+                        createdAt: DateTime.now(),
+                      );
+
+                      final updatedDevice = Device(
+                        id: selectedDevice!.id,
+                        name: selectedDevice!.name,
+                        type: selectedDevice!.type,
+                        ticketCount: selectedDevice!.ticketCount + 1,
+                        lastMaintenance: DateTime.now(),
+                      );
+
+                      await ref.read(recentTicketsProvider.notifier).createTicket(ticket);
+                      await ref.read(devicesProvider.notifier).updateDevice(updatedDevice);
+
+                      setState(() => isLoading = false);
+
+                      if (context.mounted) {
+                        context.pop();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text('Ticket creado con éxito'),
+                            backgroundColor: colors.primary,
+                          ),
+                        );
+                      }
+                    },
+              label: const Text('Crear Ticket'),
+              icon: const Icon(Icons.add),
+            ),
+          ],
+        ),
       ),
-    ),
-  );
- }
+    );
+  }
 }

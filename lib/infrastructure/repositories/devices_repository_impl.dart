@@ -28,7 +28,7 @@ class DevicesRepositoryImpl extends IDevicesRepository {
   @override
   Future<void> updateDevice(Device device) {
     // TODO: implement updateDevice
-    throw UnimplementedError();
+    return datasource.updateDevice(device);
   }
   
 }

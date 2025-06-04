@@ -43,9 +43,12 @@ class DevicesFbDatasource extends IDevicesDatasource {
   }
   
   @override
-  Future<void> updateDevice(Device device) {
+  Future<void> updateDevice(Device device) async{
     // TODO: implement updateDevice
-    throw UnimplementedError();
+    final index = devices.indexWhere((t) => t.id == device.id);
+    if (index != -1) {
+      devices[index] = device;
+    }
   }
   
 }

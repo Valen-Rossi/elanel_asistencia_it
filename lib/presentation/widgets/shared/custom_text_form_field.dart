@@ -4,6 +4,7 @@ class CustomTextFormField extends StatelessWidget {
 
   final String? label;
   final IconData? icon;
+  final Widget? suffixIcon;
   final String? hintText;
   final int? minLines;
   final int? maxLines;
@@ -19,6 +20,7 @@ class CustomTextFormField extends StatelessWidget {
     super.key, 
     this.label, 
     this.icon,
+    this.suffixIcon,
     this.hintText,
     this.minLines= 1,  
     this.maxLines= 1, 
@@ -64,6 +66,7 @@ class CustomTextFormField extends StatelessWidget {
         prefixIcon: icon!=null 
           ?Icon(icon, color: colorsTheme.primary) 
           :null,
+        suffixIcon: suffixIcon
       ),
     );
   }

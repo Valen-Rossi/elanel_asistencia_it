@@ -8,20 +8,25 @@ final devicesProvider = StateNotifierProvider<DevicesNotifier, List<Device>>((re
   return DevicesNotifier(
     fetchDevices: repository.getDevices,
     addDevice: repository.addDevice,
+    deviceUpdate: repository.updateDevice,
   );
 });
 
 typedef DevicesCallback = Future<List<Device>> Function();
 typedef AddDeviceCallback = Future<void> Function(Device device);
+typedef DeviceUpdateCallback = Future<void> Function(Device device);
+
 
 class DevicesNotifier extends StateNotifier<List<Device>> {
   bool isLoading = false;
   final DevicesCallback fetchDevices;
   final AddDeviceCallback addDevice;
+  final DeviceUpdateCallback deviceUpdate;
 
   DevicesNotifier({
     required this.fetchDevices,
     required this.addDevice,
+    required this.deviceUpdate,
   }) : super([]);
 
   Future<void> loadDevices() async {
@@ -43,6 +48,20 @@ class DevicesNotifier extends StateNotifier<List<Device>> {
 
     await addDevice(device);
     state = [device, ...state];
+
+    isLoading = false;
+  }
+
+  Future<void> updateDevice(Device updatedDevice) async {
+    if (isLoading) return;
+
+    isLoading = true;
+
+    await deviceUpdate(updatedDevice);
+
+    state = state.map((device) {
+      return device.id == updatedDevice.id ? updatedDevice : device;
+    }).toList();
 
     isLoading = false;
   }
