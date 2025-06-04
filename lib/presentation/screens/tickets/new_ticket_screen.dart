@@ -173,8 +173,36 @@ class _NewTicketViewState extends ConsumerState<_NewTicketView> {
             ),
 
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 10,
               children: [
-                
+
+                FilledButton.tonalIcon(
+                  label: Text('Escanear'),
+                  onPressed: () {
+                    
+                  }, 
+                  icon: Icon(Icons.qr_code),
+                ),
+
+                FilledButton.tonalIcon(
+                  label: Text('Agregar'),
+                  onPressed: () async {
+                    final newDeviceId = await context.push<String>('/new-device');
+                    if (newDeviceId != null) {
+                      final deviceList = ref.read(devicesProvider);
+                      final newDevice = deviceList.firstWhere(
+                        (d) => d.id == newDeviceId,
+                      );
+                      setState(() {
+                        selectedDevice = newDevice;
+                        _deviceSearchController.text = newDevice.id;
+                      });
+                    }
+                  },
+                  icon: Icon(Icons.add),
+                ),
+
               ],
             ),
 

@@ -115,7 +115,7 @@ class _NewDeviceViewState extends ConsumerState<_NewDeviceView> {
 
               if (context.mounted) {
                 // Mostrar snackbar de éxito
-                context.pop(); // volver atrás
+                context.pop(newDevice.id); // volver atrás devolviendo el id
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: const Text('Dispositivo creado con éxito'),
