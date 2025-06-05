@@ -67,13 +67,14 @@ class _TicketViewState extends ConsumerState<_TicketView> {
     final size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
 
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
+      physics: const BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InfoTicket(size: size, ticket: widget.ticket, colors: colors),
-
+      
           // Paso 1: Ticket creado
           TimelineTile(
             isFirst: true,
@@ -120,7 +121,7 @@ class _TicketViewState extends ConsumerState<_TicketView> {
               ),
             ),
           ),
-
+      
           // Paso 2: Técnico asignado
           TimelineTile(
             indicatorStyle: IndicatorStyle(
@@ -184,7 +185,7 @@ class _TicketViewState extends ConsumerState<_TicketView> {
                             );
                           },
                         );
-
+      
                         if (selectedTech != null) {
                           final updatedTicket =
                               widget.ticket.copyWith(technicianId: selectedTech.id);
@@ -203,7 +204,7 @@ class _TicketViewState extends ConsumerState<_TicketView> {
               ),
             ),
           ),
-
+      
           // Paso 3: En curso
           TimelineTile(
             indicatorStyle: IndicatorStyle(
@@ -244,7 +245,7 @@ class _TicketViewState extends ConsumerState<_TicketView> {
               ),
             ),
           ),
-
+      
           // Paso 4: Resuelto
           TimelineTile(
             isLast: true,
@@ -283,9 +284,9 @@ class _TicketViewState extends ConsumerState<_TicketView> {
               ),
             ),
           ),
-
-          Spacer(),
-
+      
+          // Spacer(),
+      
           widget.ticket.status!= TicketStatus.resolved && widget.technician!=null
           ?SizedBox(
             width: size.width,
@@ -316,7 +317,7 @@ class _TicketViewState extends ConsumerState<_TicketView> {
             ),
           )
           :SizedBox()
-
+      
         ],
       ),
     );
