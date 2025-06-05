@@ -56,16 +56,28 @@ class TicketCard extends StatelessWidget {
                               color: ticket.status.color,
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: Text(ticket.status.label),
+                            child: Text(
+                              ticket.status.label,
+                              style: TextStyle(
+                                color: ticket.status.color.withAlpha(255),
+                                fontWeight: FontWeight.w600
+                              ),
+                            ),
                           ),
                                                
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
-                              color: colors.inversePrimary,
+                              color: ticket.category.color,
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: Text(ticket.category.label),
+                            child: Text(
+                              ticket.category.label,
+                              style: TextStyle(
+                                color: ticket.category.color.withAlpha(255),
+                                fontWeight: FontWeight.w600
+                              ),
+                            ),
                           ),
                                                
                           Container(
@@ -74,7 +86,13 @@ class TicketCard extends StatelessWidget {
                               color: ticket.priority.color,
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: Text(ticket.priority.label),
+                            child: Text(
+                              ticket.priority.label,
+                              style: TextStyle(
+                                color: ticket.priority.color.withAlpha(255),
+                                fontWeight: FontWeight.w600
+                              ),
+                            ),
                           ),
                         
                         ],

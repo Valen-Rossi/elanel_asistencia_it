@@ -40,6 +40,7 @@ class Ticket {
 extension TicketCopy on Ticket {
   Ticket copyWith({
     String? technicianId,
+    TicketPriority? priority,
     // otros campos si querés
   }) {
     return Ticket(
@@ -47,7 +48,7 @@ extension TicketCopy on Ticket {
       title: title,
       description: description,
       status: status,
-      priority: priority,
+      priority: priority ?? this.priority,
       category: category,
       otherCaregory: otherCaregory,
       deviceId: deviceId,
@@ -105,11 +106,11 @@ extension TicketStatusColor on TicketStatus {
   Color get color {
     switch (this) {
       case TicketStatus.newTicket:
-        return const Color.fromARGB(123, 10, 167, 240);
+        return const Color.fromARGB(37, 36, 196, 218);
       case TicketStatus.inProgress:
-        return const Color.fromARGB(132, 241, 138, 21);
+        return const Color.fromARGB(37, 231, 151, 60);
       case TicketStatus.resolved:
-        return const Color.fromARGB(124, 42, 243, 92);
+        return const Color.fromARGB(37, 73, 217, 109);
     }
   }
 }
@@ -118,15 +119,15 @@ extension TicketCategoryColor on TicketCategory {
   Color get color {
     switch (this) {
       case TicketCategory.hardware:
-        return Colors.blue.shade400;
+        return const Color.fromARGB(36, 80, 255, 208);
       case TicketCategory.software:
-        return Colors.purple.shade400;
+        return const Color.fromRGBO(224, 113, 255, 0.141);
       case TicketCategory.account:
-        return Colors.cyan.shade400;
+        return const Color.fromARGB(37, 36, 196, 218);
       case TicketCategory.network:
-        return Colors.indigo.shade400;
+        return const Color.fromARGB(31, 98, 195, 255);
       case TicketCategory.other:
-        return Colors.grey.shade400;
+        return const Color.fromARGB(37, 189, 189, 189);
     }
   }
 }
@@ -135,11 +136,11 @@ extension TicketPriorityColor on TicketPriority {
   Color get color {
     switch (this) {
       case TicketPriority.low:
-        return const Color.fromARGB(113, 17, 209, 27);
+        return const Color.fromARGB(37, 73, 217, 109);
       case TicketPriority.medium:
-        return const Color.fromARGB(115, 211, 131, 12);
+        return const Color.fromARGB(37, 231, 151, 60);
       case TicketPriority.high:
-        return const Color.fromARGB(121, 212, 21, 18);
+        return const Color.fromARGB(36, 255, 71, 71);
     }
   }
 }
