@@ -15,11 +15,13 @@ class TicketsView extends ConsumerStatefulWidget {
 }
 
 class TicketsViewState extends ConsumerState<TicketsView> {
+  
   @override
   void initState() {
     super.initState();
     ref.read(recentTicketsProvider.notifier).loadTickets();
     ref.read(usersProvider.notifier).loadUsers();
+    ref.read(devicesProvider.notifier).loadDevices();
   }
 
   @override

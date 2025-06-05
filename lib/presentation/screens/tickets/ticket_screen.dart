@@ -1,6 +1,8 @@
+import 'package:elanel_asistencia_it/domain/entities/device.dart';
 import 'package:elanel_asistencia_it/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 import 'package:elanel_asistencia_it/presentation/providers/providers.dart';
@@ -21,6 +23,8 @@ class TicketScreen extends ConsumerWidget {
     final User? technician = (ticket.technicianId != '')
         ? ref.watch(userByIdProvider(ticket.technicianId))
         : null;
+    
+    final Device device =ref.watch(deviceByIdProvider(ticket.deviceId));
 
     final colors = Theme.of(context).colorScheme;
 
@@ -35,7 +39,7 @@ class TicketScreen extends ConsumerWidget {
           ),
         ),
       ),
-      body: _TicketView(ticket: ticket, technician: technician, users: users),
+      body: _TicketView(ticket: ticket, technician: technician, users: users, device: device,),
     );
   }
 }
@@ -45,11 +49,13 @@ class _TicketView extends ConsumerStatefulWidget {
     required this.ticket,
     required this.users,
     this.technician,
+    required this.device,
   });
 
   final Ticket ticket;
   final List<User> users;
   final User? technician;
+  final Device device;
 
   @override
   ConsumerState<_TicketView> createState() => _TicketViewState();
@@ -68,8 +74,6 @@ class _TicketViewState extends ConsumerState<_TicketView> {
         children: [
           InfoTicket(size: size, ticket: widget.ticket, colors: colors),
 
-          const SizedBox(height: 20),
-
           // Paso 1: Ticket creado
           TimelineTile(
             isFirst: true,
@@ -85,13 +89,34 @@ class _TicketViewState extends ConsumerState<_TicketView> {
                 ),
               ),
             ),
-            afterLineStyle: LineStyle(color: colors.surface, thickness: 2),
-            endChild: Padding(
-              padding: const EdgeInsets.only(left: 8, top: 5, bottom: 5),
-              child: Text(
-                'Ticket creado',
-                style: TextStyle(
-                    fontSize: 17, fontWeight: FontWeight.w500, color: colors.primary),
+            afterLineStyle: LineStyle(color: Colors.grey.shade700, thickness: 2),
+            endChild: SizedBox(
+              height: 120,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Ticket creado',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        color: colors.primary,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    FilledButton.tonalIcon(
+                      icon: Icon(widget.device.type.icon),
+                      label: Text(widget.device.name),
+                      style: ButtonStyle(visualDensity: VisualDensity.compact),
+                      onPressed: () {
+                        context.push('/device/${widget.device.id}');
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -106,71 +131,75 @@ class _TicketViewState extends ConsumerState<_TicketView> {
                 child: Icon(
                   Icons.account_circle,
                   size: 32,
-                  color: widget.ticket.technicianId != '' ? colors.primary : colors.secondary,
+                  color: widget.ticket.technicianId != ''
+                      ? colors.primary
+                      : colors.secondary,
                 ),
               ),
             ),
-            afterLineStyle: LineStyle(color: Colors.grey.shade700, thickness: 2),
             beforeLineStyle: LineStyle(color: Colors.grey.shade700, thickness: 2),
-            endChild: Padding(
-              padding: const EdgeInsets.only(left: 8, top: 50),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Técnico asignado',
-                    style: TextStyle(
-                        fontSize: 17, fontWeight: FontWeight.w500, color: colors.primary),
-                  ),
-                  const SizedBox(height: 10),
-                  FilledButton.tonalIcon(
-                    style: ButtonStyle(
-                      visualDensity: VisualDensity.compact,
+            afterLineStyle: LineStyle(color: Colors.grey.shade700, thickness: 2),
+            endChild: SizedBox(
+              height: 120,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Técnico asignado',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        color: colors.primary,
+                      ),
                     ),
-                    onPressed: () async {
-                      final selectedTech = await showDialog<User>(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Seleccionar técnico'),
-                            content: SizedBox(
-                              width: double.maxFinite,
-                              child: ListView.separated(
-                                separatorBuilder: (_, __) => const Divider(),
-                                shrinkWrap: true,
-                                itemCount: widget.users.length,
-                                itemBuilder: (_, i) {
-                                  final user = widget.users[i];
-                                  return ListTile(
-                                    visualDensity: VisualDensity.compact,
-                                    leading: Icon(
-                                      Icons.person,
-                                      color: colors.primary,
-                                    ),
-                                    title: Text(user.name),
-                                    onTap: () => Navigator.pop(context, user),
-                                  );
-                                },
+                    const SizedBox(height: 10),
+                    FilledButton.tonalIcon(
+                      style: ButtonStyle(visualDensity: VisualDensity.compact),
+                      onPressed: () async {
+                        final selectedTech = await showDialog<User>(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Seleccionar técnico'),
+                              content: SizedBox(
+                                width: double.maxFinite,
+                                child: ListView.separated(
+                                  separatorBuilder: (_, __) => const Divider(),
+                                  shrinkWrap: true,
+                                  itemCount: widget.users.length,
+                                  itemBuilder: (_, i) {
+                                    final user = widget.users[i];
+                                    return ListTile(
+                                      visualDensity: VisualDensity.compact,
+                                      leading: Icon(Icons.person, color: colors.primary),
+                                      title: Text(user.name),
+                                      onTap: () => Navigator.pop(context, user),
+                                    );
+                                  },
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      );
+                            );
+                          },
+                        );
 
-                      if (selectedTech != null) {
-                        final updatedTicket =
-                            widget.ticket.copyWith(technicianId: selectedTech.id);
-
-                        // Actualiza el ticket en el provider
-                        await ref.read(recentTicketsProvider.notifier).updateTicket(updatedTicket);
-                      }
-                    },
-                    icon: Icon(Icons.person),
-                    label: widget.technician != null
-                        ? Text(widget.technician!.name)
-                        : const Text('Asignar técnico'),
-                  ),
-                ],
+                        if (selectedTech != null) {
+                          final updatedTicket =
+                              widget.ticket.copyWith(technicianId: selectedTech.id);
+                          await ref
+                              .read(recentTicketsProvider.notifier)
+                              .updateTicket(updatedTicket);
+                        }
+                      },
+                      icon: Icon(Icons.person),
+                      label: widget.technician != null
+                          ? Text(widget.technician!.name)
+                          : const Text('Asignar técnico'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -192,19 +221,25 @@ class _TicketViewState extends ConsumerState<_TicketView> {
                 ),
               ),
             ),
-            afterLineStyle: LineStyle(color: Colors.grey.shade700, thickness: 2),
             beforeLineStyle: LineStyle(color: Colors.grey.shade700, thickness: 2),
-            endChild: Padding(
-              padding: const EdgeInsets.only(left: 8, top: 22, bottom: 20),
-              child: Text(
-                'En curso',
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                  color: (widget.ticket.status == TicketStatus.inProgress ||
-                          widget.ticket.status == TicketStatus.resolved)
-                      ? colors.primary
-                      : colors.secondary,
+            afterLineStyle: LineStyle(color: Colors.grey.shade700, thickness: 2),
+            endChild: SizedBox(
+              height: 100,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'En curso',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500,
+                      color: (widget.ticket.status == TicketStatus.inProgress ||
+                              widget.ticket.status == TicketStatus.resolved)
+                          ? colors.primary
+                          : colors.secondary,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -228,20 +263,60 @@ class _TicketViewState extends ConsumerState<_TicketView> {
               ),
             ),
             beforeLineStyle: LineStyle(color: Colors.grey.shade700, thickness: 2),
-            endChild: Padding(
-              padding: const EdgeInsets.only(left: 8, top: 32, bottom: 30),
-              child: Text(
-                'Resuelto',
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                  color: widget.ticket.status == TicketStatus.resolved
-                      ? colors.primary
-                      : colors.secondary,
+            endChild: SizedBox(
+              height: 100,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Resuelto',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500,
+                      color: widget.ticket.status == TicketStatus.resolved
+                          ? colors.primary
+                          : colors.secondary,
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
+
+          Spacer(),
+
+          widget.ticket.status!= TicketStatus.resolved && widget.technician!=null
+          ?SizedBox(
+            width: size.width,
+            child: FilledButton(
+              style: ButtonStyle(
+              ),
+              onPressed: () async{
+                if(widget.ticket.status!= TicketStatus.inProgress){
+                  final updatedTicket =
+                      widget.ticket.copyWith(status: TicketStatus.inProgress);
+                  await ref
+                      .read(recentTicketsProvider.notifier)
+                      .updateTicket(updatedTicket);
+                }
+                else {
+                  final updatedTicket =
+                      widget.ticket.copyWith(status: TicketStatus.resolved);
+                  await ref
+                      .read(recentTicketsProvider.notifier)
+                      .updateTicket(updatedTicket);
+                }
+              }, 
+              child: Text(
+                widget.ticket.status!= TicketStatus.inProgress
+                ?'Abrir Ticket'
+                :'Cerrar Ticket'
+                )
+            ),
+          )
+          :SizedBox()
+
         ],
       ),
     );

@@ -41,13 +41,14 @@ extension TicketCopy on Ticket {
   Ticket copyWith({
     String? technicianId,
     TicketPriority? priority,
+    TicketStatus? status,
     // otros campos si querés
   }) {
     return Ticket(
       id: id,
       title: title,
       description: description,
-      status: status,
+      status: status ?? this.status,
       priority: priority ?? this.priority,
       category: category,
       otherCaregory: otherCaregory,
