@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:elanel_asistencia_it/presentation/widgets/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:vibration/vibration.dart';
+import 'package:vibration/vibration_presets.dart';
 
 class NewTicketScreen extends StatelessWidget {
 
@@ -219,11 +221,18 @@ class _NewTicketViewState extends ConsumerState<_NewTicketView> {
                         }
 
                         if (matchedDevice != null) {
+                          // Vibración corta si está disponible
+                          if (await Vibration.hasVibrator()) {
+                            Vibration.vibrate(preset: VibrationPreset.singleShortBuzz); // 100ms
+                          }
                           setState(() {
                             selectedDevice = matchedDevice!;
                             _deviceSearchController.text = matchedDevice.id;
                           });
                         } else {
+                          if (await Vibration.hasVibrator()) {
+                            Vibration.vibrate(preset: VibrationPreset.doubleBuzz); // 100ms
+                          }
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Dispositivo con ID "$result" no encontrado')),
@@ -263,7 +272,12 @@ class _NewTicketViewState extends ConsumerState<_NewTicketView> {
                   ? null
                   : () async {
                       final isValid = _formKey.currentState!.validate();
-                      if (!isValid || selectedDevice == null) return;
+                      if (!isValid || selectedDevice == null || isLoading) {
+                        if (await Vibration.hasVibrator()) {
+                          Vibration.vibrate(preset: VibrationPreset.doubleBuzz); // 100ms
+                        }
+                        return;
+                      }
 
                       setState(() => isLoading = true);
 
@@ -292,6 +306,10 @@ class _NewTicketViewState extends ConsumerState<_NewTicketView> {
                       await ref.read(devicesProvider.notifier).updateDevice(updatedDevice);
 
                       setState(() => isLoading = false);
+
+                      if (await Vibration.hasVibrator()) {
+                        Vibration.vibrate(preset: VibrationPreset.singleShortBuzz); // 100ms
+                      }
 
                       if (context.mounted) {
                         context.pop();

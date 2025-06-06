@@ -8,6 +8,8 @@ import 'package:timeline_tile/timeline_tile.dart';
 import 'package:elanel_asistencia_it/presentation/providers/providers.dart';
 import 'package:elanel_asistencia_it/domain/entities/user.dart';
 import 'package:elanel_asistencia_it/domain/entities/ticket.dart';
+import 'package:vibration/vibration.dart';
+import 'package:vibration/vibration_presets.dart';
 
 class TicketScreen extends ConsumerWidget {
   static const name = 'ticket-screen';
@@ -187,11 +189,16 @@ class _TicketViewState extends ConsumerState<_TicketView> {
                         );
       
                         if (selectedTech != null) {
+                          
                           final updatedTicket =
                               widget.ticket.copyWith(technicianId: selectedTech.id);
                           await ref
                               .read(recentTicketsProvider.notifier)
                               .updateTicket(updatedTicket);
+
+                          if (await Vibration.hasVibrator()) {
+                            Vibration.vibrate(preset: VibrationPreset.doubleBuzz); // 100ms
+                          }
                         }
                       },
                       icon: Icon(Icons.person),
@@ -303,6 +310,10 @@ class _TicketViewState extends ConsumerState<_TicketView> {
                       .read(recentTicketsProvider.notifier)
                       .updateTicket(updatedTicket);
 
+                  if (await Vibration.hasVibrator()) {
+                    Vibration.vibrate(preset: VibrationPreset.singleShortBuzz); // 100ms
+                  }
+  
                   if(context.mounted){
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -318,6 +329,10 @@ class _TicketViewState extends ConsumerState<_TicketView> {
                   await ref
                       .read(recentTicketsProvider.notifier)
                       .updateTicket(updatedTicket);
+
+                  if (await Vibration.hasVibrator()) {
+                    Vibration.vibrate(preset: VibrationPreset.singleShortBuzz); // 100ms
+                  }
                   if(context.mounted){
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

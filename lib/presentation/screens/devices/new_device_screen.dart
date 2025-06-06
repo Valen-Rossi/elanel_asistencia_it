@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:elanel_asistencia_it/presentation/widgets/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:vibration/vibration.dart';
+import 'package:vibration/vibration_presets.dart';
 
 class NewDeviceScreen extends StatelessWidget {
 
@@ -95,7 +97,12 @@ class _NewDeviceViewState extends ConsumerState<_NewDeviceView> {
           FilledButton.icon(
             onPressed: () async {
               final isValid = _formKey.currentState!.validate();
-              if (!isValid || isLoading) return;
+              if (!isValid || isLoading) {
+                if (await Vibration.hasVibrator()) {
+                  Vibration.vibrate(preset: VibrationPreset.doubleBuzz); // 100ms
+                }
+                return;
+              }
 
               setState(() => isLoading = true);
 
@@ -112,6 +119,10 @@ class _NewDeviceViewState extends ConsumerState<_NewDeviceView> {
                 .createDevice(newDevice);
 
               setState(() => isLoading = false);
+
+              if (await Vibration.hasVibrator()) {
+                Vibration.vibrate(preset: VibrationPreset.singleShortBuzz); // 100ms
+              }
 
               if (context.mounted) {
                 // Mostrar snackbar de éxito
@@ -132,6 +143,7 @@ class _NewDeviceViewState extends ConsumerState<_NewDeviceView> {
                 fontWeight: FontWeight.w700
               ),
             ),
+
             icon: const Icon(Icons.save),
           ),
       ],

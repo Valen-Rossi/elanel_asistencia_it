@@ -28,7 +28,9 @@ class _QRScannerViewState extends State<_QRScannerView> {
   void _onDetect(BarcodeCapture capture) {
     if (_isScanned) return;
 
+    if (capture.barcodes.isEmpty) return;
     final barcode = capture.barcodes.first;
+
     final String? code = barcode.rawValue;
 
     if (code != null && code.isNotEmpty) {

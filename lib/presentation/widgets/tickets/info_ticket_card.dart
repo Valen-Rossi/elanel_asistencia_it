@@ -4,6 +4,8 @@ import 'package:timeago_flutter/timeago_flutter.dart';
 
 import 'package:elanel_asistencia_it/presentation/providers/tickets/tickets_providers.dart';
 import 'package:elanel_asistencia_it/domain/entities/ticket.dart';
+import 'package:vibration/vibration.dart';
+import 'package:vibration/vibration_presets.dart';
 
 class InfoTicket extends ConsumerStatefulWidget {
   const InfoTicket({
@@ -109,7 +111,7 @@ class InfoTicketState extends ConsumerState<InfoTicket> {
                 style: ButtonStyle(
                   visualDensity: VisualDensity.compact,
                   backgroundColor:
-                      MaterialStateProperty.all(widget.ticket.priority.color),
+                      WidgetStateProperty.all(widget.ticket.priority.color),
                 ),
                 onPressed: () async {
                   final selectedPriority = await showDialog<TicketPriority>(
@@ -138,6 +140,10 @@ class InfoTicketState extends ConsumerState<InfoTicket> {
                     final updatedTicket = widget.ticket.copyWith(priority: selectedPriority);
 
                     await ref.read(recentTicketsProvider.notifier).updateTicket(updatedTicket);
+
+                    if (await Vibration.hasVibrator()) {
+                      Vibration.vibrate(preset: VibrationPreset.singleShortBuzz); // 100ms
+                    }
                   }
                 },
                 child: Text(

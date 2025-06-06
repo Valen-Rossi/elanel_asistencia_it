@@ -4,6 +4,8 @@ import 'package:elanel_asistencia_it/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:markdown_toolbar/markdown_toolbar.dart';
+import 'package:vibration/vibration.dart';
+import 'package:vibration/vibration_presets.dart';
 
 class NewFAQScreen extends ConsumerStatefulWidget {
   static const name = 'new-faq-screen';
@@ -126,7 +128,12 @@ class NewFAQScreenState extends ConsumerState<NewFAQScreen> {
               FilledButton.icon(
                 onPressed: () async {
                   final isValid = _formKey.currentState!.validate();
-                  if (!isValid || isLoading) return;
+                  if (!isValid || isLoading) {
+                    if (await Vibration.hasVibrator()) {
+                      Vibration.vibrate(preset: VibrationPreset.doubleBuzz); // 100ms
+                    }
+                    return;
+                  }
 
                   setState(() => isLoading = true);
 
@@ -142,6 +149,10 @@ class NewFAQScreenState extends ConsumerState<NewFAQScreen> {
                       .createFAQ(newFAQ);
 
                   setState(() => isLoading = false);
+
+                  if (await Vibration.hasVibrator()) {
+                    Vibration.vibrate(preset: VibrationPreset.singleShortBuzz); // 100ms
+                  }
 
                   if (context.mounted) {
                     Navigator.of(context).pop();
