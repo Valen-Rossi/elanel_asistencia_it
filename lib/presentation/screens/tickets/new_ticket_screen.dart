@@ -235,7 +235,11 @@ class _NewTicketViewState extends ConsumerState<_NewTicketView> {
                           }
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Dispositivo con ID "$result" no encontrado')),
+                              SnackBar(content: Text(
+                                'Dispositivo con ID "$result" no encontrado',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              )),
                             );
                           }
                         }
