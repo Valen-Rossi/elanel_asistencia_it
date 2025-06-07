@@ -46,8 +46,9 @@ class TicketCard extends StatelessWidget {
                       
                       const SizedBox(height: 5),
                       
-                      Row(
+                      Wrap(
                         spacing: 5,
+                        runSpacing: 5,
                         children: [
                           
                           Container(
@@ -72,7 +73,9 @@ class TicketCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
-                              ticket.category.label,
+                              ticket.category == TicketCategory.other
+                              ?ticket.otherCaregory
+                              :ticket.category.label,
                               style: TextStyle(
                                 color: ticket.category.color.withAlpha(255),
                                 fontWeight: FontWeight.w600

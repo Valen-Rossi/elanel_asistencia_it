@@ -99,7 +99,9 @@ class InfoTicketState extends ConsumerState<InfoTicket> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  widget.ticket.category.label,
+                  widget.ticket.category == TicketCategory.other
+                    ?widget.ticket.otherCaregory
+                    :widget.ticket.category.label,
                   style: TextStyle(
                     color: widget.ticket.category.color.withAlpha(255),
                     fontWeight: FontWeight.w600,

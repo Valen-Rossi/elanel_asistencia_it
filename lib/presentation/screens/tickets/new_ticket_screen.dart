@@ -58,6 +58,7 @@ class _NewTicketViewState extends ConsumerState<_NewTicketView> {
 
   String ticketTitle = '';
   String ticketDescription = '';
+  String otherCategory = '';
   TicketCategory ticketCategory = TicketCategory.hardware;
   Device? selectedDevice;
   bool isLoading = false;
@@ -124,6 +125,21 @@ class _NewTicketViewState extends ConsumerState<_NewTicketView> {
               },
               validator: (value) => value == null ? 'La categoría es requerida' : null,
             ),
+
+            (ticketCategory==TicketCategory.other)
+            ?CustomTextFormField(
+              label: 'Otra Categoría',
+              hintText: 'Por ejemplo: Celular personal',
+              icon: Icons.devices_other,
+              onChanged: (value) => otherCategory = value.trim(),
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) return 'El nombre de la otra es requerida';
+                if (value.length < 4) return 'Debe tener al menos 4 caracteres';
+                if (value.length > 20) return 'Máximo 20 caracteres';
+                return null;
+              },
+            )
+            : SizedBox(),
 
            CustomTextFormField(
             controller: _deviceSearchController,
@@ -292,7 +308,7 @@ class _NewTicketViewState extends ConsumerState<_NewTicketView> {
                         status: TicketStatus.newTicket,
                         priority: TicketPriority.low,
                         category: ticketCategory,
-                        otherCaregory: '',
+                        otherCaregory: otherCategory,
                         deviceId: selectedDevice!.id,
                         technicianId: '',
                         createdAt: DateTime.now(),
