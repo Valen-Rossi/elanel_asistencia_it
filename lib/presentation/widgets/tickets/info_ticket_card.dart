@@ -63,8 +63,13 @@ class InfoTicketState extends ConsumerState<InfoTicket> {
               ),
             ],
           ),
+
           const SizedBox(height: 5),
-          Row(
+
+          Wrap(
+            spacing: 10,
+            runSpacing: 5,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Text(
                 'Ticket ID: ${widget.ticket.id} - ',
@@ -73,15 +78,25 @@ class InfoTicketState extends ConsumerState<InfoTicket> {
                   fontWeight: FontWeight.w400,
                 ),
               ),
+
               Timeago(
-                date: widget.ticket.createdAt,
-                locale: 'es',
-                builder: (_, value) => Text('Creado $value'),
-                refreshRate: const Duration(seconds: 30),
+              date: widget.ticket.createdAt,
+              locale: 'es',
+              builder: (_, value) => Text(
+                'Creado $value',
+                style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                ),
               ),
+              refreshRate: const Duration(seconds: 30),
+              ),
+
             ],
           ),
+
           const SizedBox(height: 10),
+
           Text(
             widget.ticket.description,
             style: const TextStyle(
