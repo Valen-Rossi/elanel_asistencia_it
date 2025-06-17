@@ -9,6 +9,7 @@ class UsersFbDatasource extends IUsersDatasource {
       id: '001',
       name: 'Lautaro Rodríguez',
       email: 'tintin@gmail.com',
+      password: 'password001',
       role: UserRole.admin,
     ),
 
@@ -16,6 +17,7 @@ class UsersFbDatasource extends IUsersDatasource {
       id: '002',
       name: 'Ana Gómez',
       email: 'ana@gmail.com',
+      password: 'password002',
       role: UserRole.technician,
     ),
 
@@ -23,6 +25,7 @@ class UsersFbDatasource extends IUsersDatasource {
       id: '003',
       name: 'Luis Fernández',
       email: 'luis@gmail.com',
+      password: 'password003',
       role: UserRole.client,
     ),
 
@@ -30,6 +33,7 @@ class UsersFbDatasource extends IUsersDatasource {
       id: '004',
       name: 'María López',
       email: 'mari@gmail.com',
+      password: 'password004',
       role: UserRole.client,
     ),
 
@@ -37,6 +41,7 @@ class UsersFbDatasource extends IUsersDatasource {
       id: '005',
       name: 'Carlos Sánchez',
       email: 'carlos@gmail.com',
+      password: 'password005',
       role: UserRole.technician,
     ),
 
@@ -44,6 +49,7 @@ class UsersFbDatasource extends IUsersDatasource {
       id: '006',
       name: 'Valentino Rossi',
       email: 'rossi@gmail.com',
+      password: 'password006',
       role: UserRole.admin,
     ),
 
@@ -51,6 +57,7 @@ class UsersFbDatasource extends IUsersDatasource {
       id: '007',
       name: 'Julián Álvarez',
       email: 'araña@gmail.com',
+      password: 'password007',
       role: UserRole.technician,
     ),
 
@@ -58,6 +65,7 @@ class UsersFbDatasource extends IUsersDatasource {
       id: '008',
       name: 'Lionel Messi',
       email: 'pulga@gmail.com',
+      password: 'password008',
       role: UserRole.technician,
     ),
 
@@ -70,9 +78,9 @@ class UsersFbDatasource extends IUsersDatasource {
   }
 
   @override
-  Future<void> addUser(User user) {
+  Future<void> addUser(User user) async{
     // TODO: implement addUser
-    throw UnimplementedError();
+    users.insert(0, user);
   }
 
   @override

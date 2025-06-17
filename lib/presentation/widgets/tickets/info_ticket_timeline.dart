@@ -13,14 +13,14 @@ import 'package:elanel_asistencia_it/presentation/providers/providers.dart';
 class InfoTicketTimeline extends ConsumerWidget {
   final Ticket ticket;
   final User? technician;
-  final List<User> users;
+  final List<User> technicians;
   final Device device;
 
   const InfoTicketTimeline({
     super.key,
     required this.ticket,
     required this.technician,
-    required this.users,
+    required this.technicians,
     required this.device,
   });
 
@@ -122,9 +122,9 @@ class InfoTicketTimeline extends ConsumerWidget {
                               child: ListView.separated(
                                 separatorBuilder: (_, __) => const Divider(),
                                 shrinkWrap: true,
-                                itemCount: users.length,
+                                itemCount: technicians.length,
                                 itemBuilder: (_, i) {
-                                  final user = users[i];
+                                  final user = technicians[i];
                                   return ListTile(
                                     visualDensity: VisualDensity.compact,
                                     leading: Icon(Icons.person, color: colors.primary),

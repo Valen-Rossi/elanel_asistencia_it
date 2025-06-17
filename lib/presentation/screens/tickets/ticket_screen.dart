@@ -1,3 +1,4 @@
+import 'package:elanel_asistencia_it/presentation/providers/users/technician_users_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vibration/vibration.dart';
@@ -18,7 +19,7 @@ class TicketScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Ticket ticket = ref.watch(ticketByIdProvider(ticketId));
-    final List<User> users = ref.watch(usersProvider);
+    final List<User> technicians = ref.watch(technicianUsersProvider);
 
     final User? technician = (ticket.technicianId != '')
         ? ref.watch(userByIdProvider(ticket.technicianId))
@@ -42,7 +43,7 @@ class TicketScreen extends ConsumerWidget {
       body: _TicketView(
         ticketId: ticket.id,
         technician: technician,
-        users: users,
+        technicians: technicians,
         device: device,
       ),
     );
@@ -52,13 +53,13 @@ class TicketScreen extends ConsumerWidget {
 class _TicketView extends ConsumerStatefulWidget {
   const _TicketView({
     required this.ticketId,
-    required this.users,
+    required this.technicians,
     this.technician,
     required this.device,
   });
 
   final String ticketId;
-  final List<User> users;
+  final List<User> technicians;
   final User? technician;
   final Device device;
 
@@ -86,7 +87,7 @@ class _TicketViewState extends ConsumerState<_TicketView> {
           InfoTicketTimeline(
             ticket: ticket,
             technician: widget.technician,
-            users: widget.users,
+            technicians: widget.technicians,
             device: widget.device,
           ),
 
