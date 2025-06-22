@@ -41,6 +41,8 @@ class _DeviceView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    final size = MediaQuery.of(context).size;
 
     return Padding(
             padding: const EdgeInsets.all(20),
@@ -50,27 +52,52 @@ class _DeviceView extends StatelessWidget {
 
                 _InfoDevice(device: device),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 37),
 
                 Container(
+                  width: size.width,
                   padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 20),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.onInverseSurface,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 10,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       
                       Text(
-                        'Información del Dispositivo',
+                        'QR del Dispositivo',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
 
-                      
                       QrImageView(
                         data: device.id,
                         version: QrVersions.auto,
-                        size: 200.0,
+                        // gapless: true,
+                        dataModuleStyle: QrDataModuleStyle(
+                          dataModuleShape: QrDataModuleShape.square,
+                          color: colors.primary,
+                        ),
+                        eyeStyle: QrEyeStyle(
+                          eyeShape: QrEyeShape.square,
+                          color: colors.primary,
+                        ),
+                        size: 220,
+                        // padding: const EdgeInsets.all(10),
+                        // backgroundColor: colors.onInverseSurface,
+                      ),
+                      
+                      Text(
+                        'Escanea este código QR para identificar rápidamente este dispositivo',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
 
                     ],
