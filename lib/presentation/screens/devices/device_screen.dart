@@ -44,7 +44,7 @@ class _DeviceView extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     final size = MediaQuery.of(context).size;
 
-    return Padding(
+    return SingleChildScrollView(
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
