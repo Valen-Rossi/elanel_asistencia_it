@@ -13,7 +13,7 @@ class TicketMapper {
         otherCaregory: fb.otherCategory,
         createdById: fb.createdById,
         createdByEmail: fb.createdByEmail,
-        createdByName: fb.createdByEmail,
+        createdByName: fb.createdByName,
         deviceId: fb.deviceId,
         technicianId: fb.technicianId,
         createdAt: fb.createdAt.toDate(),

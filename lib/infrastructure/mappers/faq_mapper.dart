@@ -3,7 +3,7 @@ import 'package:elanel_asistencia_it/infrastructure/models/firebase/faq_firebase
 
 class FAQMapper {
 
-  static FAQ toEntity(FAQFromfirebase fb) {
+  static FAQ toEntity(FAQFromFirebase fb) {
     return FAQ(
       id: fb.id,
       title: fb.title,
@@ -12,8 +12,8 @@ class FAQMapper {
     );
   }
 
-  static FAQFromfirebase toFirebase(FAQ f) {
-    return FAQFromfirebase(
+  static FAQFromFirebase toFirebase(FAQ f) {
+    return FAQFromFirebase(
       id: f.id,
       title: f.title,
       description: f.description,

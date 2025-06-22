@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:elanel_asistencia_it/domain/entities/device.dart';
 import 'package:elanel_asistencia_it/presentation/providers/providers.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class DeviceScreen extends ConsumerWidget {
   static const name = 'device-screen';
@@ -50,6 +51,31 @@ class _DeviceView extends StatelessWidget {
                 _InfoDevice(device: device),
 
                 const SizedBox(height: 20),
+
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onInverseSurface,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      
+                      Text(
+                        'Información del Dispositivo',
+                      ),
+
+                      
+                      QrImageView(
+                        data: device.id,
+                        version: QrVersions.auto,
+                        size: 200.0,
+                      ),
+
+                    ],
+                  ),
+                ),
 
               ],
             ),

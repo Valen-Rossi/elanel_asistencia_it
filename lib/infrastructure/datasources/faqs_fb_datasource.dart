@@ -14,7 +14,7 @@ class FAQsFbDatasource extends IFAQsDatasource{
     final snap = await _db.get();
     return snap.docs
         .map((d) => FAQMapper.toEntity(
-            FAQFromfirebase.fromJson(d.id, d.data())))
+            FAQFromFirebase.fromJson(d.id, d.data())))
         .toList();
   }
   

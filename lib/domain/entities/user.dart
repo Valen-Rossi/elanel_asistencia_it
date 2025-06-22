@@ -19,13 +19,14 @@ class User {
 
 extension UserCopy on User {
   User copyWith({
+    String? id,
     String? name,
     String? email,
     String? password,
     UserRole? role,
   }) {
     return User(
-      id: id,
+      id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
       password: password ?? this.password,
@@ -35,6 +36,22 @@ extension UserCopy on User {
 }
 
 // ===== UserRole Extensions =====
+
+extension UserRoleX on UserRole {
+  static UserRole fromString(String role) {
+    switch (role) {
+      case 'admin':
+        return UserRole.admin;
+      case 'client':
+        return UserRole.client;
+      case 'technician':
+        return UserRole.technician;
+      default:
+        throw ArgumentError('Unknown user role: $role');
+    }
+  }
+}
+
 extension UserRoleLabel on UserRole {
   String get label {
     switch (this) {

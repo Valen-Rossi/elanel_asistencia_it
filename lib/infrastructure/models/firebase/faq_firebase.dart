@@ -1,21 +1,21 @@
 
 import 'package:elanel_asistencia_it/domain/entities/faq.dart';
 
-class FAQFromfirebase {
+class FAQFromFirebase {
   final String id;
   final String title;
   final String description;
   final String type;
 
-  FAQFromfirebase({
+  FAQFromFirebase({
     required this.id,
     required this.title,
     required this.description,
     required this.type,
   });
 
-  factory FAQFromfirebase.fromJson(String id, Map<String, dynamic> json) {
-    return FAQFromfirebase(
+  factory FAQFromFirebase.fromJson(String id, Map<String, dynamic> json) {
+    return FAQFromFirebase(
       id: id,
       title: json['title'] ?? '',
       description: json['description'] ?? '',

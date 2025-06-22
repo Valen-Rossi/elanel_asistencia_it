@@ -46,7 +46,10 @@ class _NewUserViewState extends ConsumerState<_NewUserView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String userName = '';
   String userEmail = '';
+  String userPassword = '';
   UserRole userRole = UserRole.client;
+
+  bool isPasswordVisible = false;
   
 
  @override
@@ -76,6 +79,7 @@ class _NewUserViewState extends ConsumerState<_NewUserView> {
               return null;
             },
           ),
+          
           CustomTextFormField(
             label: 'Correo del Usuario',
             hintText: 'Ejemplo: lautaro@gmail.com',
@@ -91,6 +95,35 @@ class _NewUserViewState extends ConsumerState<_NewUserView> {
               return null;
             },
           ),
+
+          CustomTextFormField(
+            label: 'Contraseña del Usuario',
+            hintText: 'Ingrese una contraseña',
+            icon: Icons.lock_outline,
+            textCapitalization: TextCapitalization.none,
+            textInputType: TextInputType.visiblePassword,
+            obscureText: !isPasswordVisible,
+            suffixIcon: IconButton(
+              onPressed: () {
+                setState(() => isPasswordVisible = !isPasswordVisible);
+              },
+              icon: Icon(isPasswordVisible ? Icons.visibility : Icons.visibility_off),
+            ),
+            onChanged: (value) => userPassword = value.trim(),
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return 'La contraseña del usuario es requerida';
+              }
+              if (value.length < 6) {
+                return 'Debe tener al menos 6 caracteres';
+              }
+              if (!RegExp(r'\d').hasMatch(value)) {
+                return 'Debe contener al menos un número';
+              }
+              return null;
+            },
+          ),
+
 
           CustomDropdownFormField<UserRole>(
             label: 'Rol de Usuario',
@@ -128,7 +161,7 @@ class _NewUserViewState extends ConsumerState<_NewUserView> {
                 name: userName,
                 role: userRole,
                 email: userEmail,
-                password: '',
+                password: userPassword,
               );
 
               await ref
