@@ -71,6 +71,8 @@ class _TicketView extends ConsumerStatefulWidget {
 class _TicketViewState extends ConsumerState<_TicketView> {
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(currentAppUserProvider);
+
     final size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
 
@@ -140,8 +142,8 @@ class _TicketViewState extends ConsumerState<_TicketView> {
           const SizedBox(height: 20),
 
           // ✅ Usamos el ticket actualizado dinámicamente
-          ticket.status != TicketStatus.resolved && widget.technician != null
-          ? SizedBox(
+          if (ticket.status != TicketStatus.resolved && widget.technician != null && user != null && user.role != UserRole.client)
+            SizedBox(
               width: size.width,
               child: FilledButton(
                 onPressed: () async {
@@ -180,12 +182,18 @@ class _TicketViewState extends ConsumerState<_TicketView> {
                   style: const TextStyle(fontWeight: FontWeight.w700),
                 ),
               ),
-            )
-          : ticket.hasFeedback
-              ? FeedbackCard(feedbackId: ticket.id)
-              : ticket.status == TicketStatus.resolved
-                ? NewFeedbackCard(ticket: ticket)
-                : const SizedBox.shrink(),
+            ),
+
+          if (ticket.hasFeedback && ticket.status == TicketStatus.resolved)
+            FeedbackCard(feedbackId: ticket.id),
+
+          if (ticket.status == TicketStatus.resolved && !ticket.hasFeedback && user != null && user.role == UserRole.client)
+            NewFeedbackCard(ticket: ticket),
+
+          if (!(ticket.status != TicketStatus.resolved && widget.technician != null) &&
+              !ticket.hasFeedback &&
+              ticket.status != TicketStatus.resolved)
+            const SizedBox.shrink(),
         ],
       ),
     );

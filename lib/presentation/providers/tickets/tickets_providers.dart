@@ -6,9 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final recentTicketsProvider = StateNotifierProvider<TicketsNotifier, List<Ticket>>((ref) {
   final repository = ref.watch(ticketRepositoryProvider);
-  final user = ref.watch(currentAppUserProvider);
+
   return TicketsNotifier(
-    user: user,
     fetchTickets: repository.getTickets,
     addTicket: repository.addTicket,
     ticketUpdate: repository.updateTicket,
@@ -16,7 +15,8 @@ final recentTicketsProvider = StateNotifierProvider<TicketsNotifier, List<Ticket
 });
 
 
-typedef TicketCallback = Future<List<Ticket>> Function(User user);
+
+typedef TicketCallback = Future<List<Ticket>> Function(User? user);
 typedef TicketAddCallback = Future<void> Function(Ticket ticket);
 typedef TicketUpdateCallback = Future<void> Function(Ticket ticket);
 
@@ -26,25 +26,24 @@ class TicketsNotifier extends StateNotifier<List<Ticket>> {
   final TicketCallback fetchTickets;
   final TicketAddCallback addTicket;
   final TicketUpdateCallback ticketUpdate;
-  final User user;
 
   TicketsNotifier({
     required this.fetchTickets,
     required this.addTicket,
     required this.ticketUpdate,
-    required this.user,
   }) : super([]);
+  
 
-  Future<void> loadTickets() async {
+  Future<void> loadTickets(User? user) async {
     if (isLoading) return;
+    if (user == null) return;
 
     isLoading = true;
-
-    final List<Ticket> tickets = await fetchTickets(user);
+    final tickets = await fetchTickets(user);
     state = [...tickets];
-
     isLoading = false;
   }
+
 
   Future<void> createTicket(Ticket ticket) async {
     

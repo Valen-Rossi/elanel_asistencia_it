@@ -19,7 +19,6 @@ class TicketsViewState extends ConsumerState<TicketsView> {
   @override
   void initState() {
     super.initState();
-    ref.read(recentTicketsProvider.notifier).loadTickets();
     ref.read(usersProvider.notifier).loadUsers();
     ref.read(devicesProvider.notifier).loadDevices();
     ref.read(feedbacksProvider.notifier).loadFeedbacks();
@@ -28,6 +27,11 @@ class TicketsViewState extends ConsumerState<TicketsView> {
 
   @override
   Widget build(BuildContext context) {
+
+    final user = ref.watch(currentAppUserProvider);
+    ref.read(recentTicketsProvider.notifier).loadTickets(user);
+
+
     final filteredTickets = ref.watch(filteredTicketsProvider);
     final filters = ref.watch(ticketFilterProvider);
     final filterNotifier = ref.read(ticketFilterProvider.notifier);
@@ -41,7 +45,7 @@ class TicketsViewState extends ConsumerState<TicketsView> {
 
           if (newTicketId != null && context.mounted) {
             // Volvió de la pantalla de nuevo ticket
-            await ref.read(recentTicketsProvider.notifier).loadTickets();
+            await ref.read(recentTicketsProvider.notifier).loadTickets(user);
           }
         },
         child: const Icon(Icons.add),

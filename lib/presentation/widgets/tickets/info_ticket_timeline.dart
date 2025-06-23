@@ -26,6 +26,9 @@ class InfoTicketTimeline extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+    final user = ref.watch(currentAppUserProvider);
+
     final colors = Theme.of(context).colorScheme;
 
     return Column(
@@ -148,6 +151,9 @@ class InfoTicketTimeline extends ConsumerWidget {
                   FilledButton.tonalIcon(
                     style: ButtonStyle(visualDensity: VisualDensity.compact),
                     onPressed: () async {
+                      if (user == null || user.role != UserRole.admin) {
+                        return;
+                      }
                       final selectedTech = await showDialog<User>(
                         context: context,
                         builder: (context) {

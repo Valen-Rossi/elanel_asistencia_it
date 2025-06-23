@@ -1,3 +1,5 @@
+import 'package:elanel_asistencia_it/domain/entities/user.dart';
+import 'package:elanel_asistencia_it/presentation/providers/users/current_user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timeago_flutter/timeago_flutter.dart';
@@ -24,8 +26,12 @@ class InfoTicketCard extends ConsumerStatefulWidget {
 }
 
 class InfoTicketCardState extends ConsumerState<InfoTicketCard> {
+
   @override
   Widget build(BuildContext context) {
+
+    final user = ref.watch(currentAppUserProvider);
+  
     return Container(
       width: widget.size.width,
       padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 20),
@@ -131,6 +137,10 @@ class InfoTicketCardState extends ConsumerState<InfoTicketCard> {
                       WidgetStateProperty.all(widget.ticket.priority.color),
                 ),
                 onPressed: () async {
+                  if (user == null || user.role != UserRole.admin) {
+                    return;
+                  }
+
                   final selectedPriority = await showDialog<TicketPriority>(
                     context: context,
                     builder: (context) {

@@ -14,7 +14,7 @@ class TicketsRepositoryImpl implements ITicketsDatasource {
   Future<void> deleteTicket(String id) => datasource.deleteTicket(id);
 
   @override
-  Future<List<Ticket>> getTickets(User user) => datasource.getTickets(user);
+  Future<List<Ticket>> getTickets(User? user) => datasource.getTickets(user);
 
   @override
   Future<void> updateTicket(Ticket t) => datasource.updateTicket(t);

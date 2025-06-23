@@ -9,12 +9,26 @@ class TicketsFbDatasource extends ITicketsDatasource {
   final _db = FirebaseFirestore.instance.collection('tickets');
 
   @override
-  Future<List<Ticket>> getTickets(User user) async {
-    final snap = await _db.orderBy('createdAt', descending: true).where('createdById', isEqualTo: user.id).get();
-    return snap.docs
-        .map((d) => TicketMapper.fromFirebase(
-            TicketFromFirebase.fromJson(d.id, d.data())))
-        .toList();
+  Future<List<Ticket>> getTickets(User? user) async {
+    
+    final snap = await _db.orderBy('createdAt', descending: true).get();
+
+    return user == null || user.role == UserRole.admin
+        ? snap.docs
+            .map((d) => TicketMapper.fromFirebase(
+                TicketFromFirebase.fromJson(d.id, d.data())))
+            .toList()
+        : user.role == UserRole.client 
+            ? snap.docs
+                .where((d) => d.data()['createdById'] == user.id)
+                .map((d) => TicketMapper.fromFirebase(
+                    TicketFromFirebase.fromJson(d.id, d.data())))
+                .toList()
+            : snap.docs
+                .where((d) => d.data()['technicianId'] == user.id)
+                .map((d) => TicketMapper.fromFirebase(
+                    TicketFromFirebase.fromJson(d.id, d.data())))
+                .toList();
   }
 
   @override

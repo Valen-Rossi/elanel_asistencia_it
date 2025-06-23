@@ -19,7 +19,6 @@ class HomeViewState extends ConsumerState<HomeView> {
   void initState() {
     super.initState();
     
-    ref.read(recentTicketsProvider.notifier).loadTickets();
     ref.read(usersProvider.notifier).loadUsers();
     ref.read(devicesProvider.notifier).loadDevices();
     ref.read(feedbacksProvider.notifier).loadFeedbacks();
@@ -28,6 +27,12 @@ class HomeViewState extends ConsumerState<HomeView> {
 
  @override
  Widget build(BuildContext context) {
+
+  final user = ref.watch(currentAppUserProvider);
+  
+  ref.read(recentTicketsProvider.notifier).loadTickets(user);
+  
+
 
   final recentTickets = ref.watch(recentTicketsProvider);
   final newTickets = ref.watch(newTicketsProvider);
