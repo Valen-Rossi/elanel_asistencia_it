@@ -1,11 +1,31 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:elanel_asistencia_it/presentation/screens/screens.dart';
 import 'package:elanel_asistencia_it/presentation/screens/views/views.dart';
 
 final appRouter = GoRouter(
+  initialLocation: '/splash',
+  redirect: (context, state) {
+    final user = FirebaseAuth.instance.currentUser;
+    final isLoggingIn = state.uri.toString() == '/login';
 
-    initialLocation: '/',
-    routes: [
+    if (user == null && !isLoggingIn) return '/login';
+    if (user != null && isLoggingIn) return '/';
+
+    return null;
+  },
+  routes: [
+
+    GoRoute(
+      path: '/splash',
+      builder: (context, state) => const SplashScreen(),
+    ),
+
+    GoRoute(
+      path: '/login',
+      name: LoginScreen.name,
+      builder: (context, state) => const LoginScreen(),
+    ),
 
       ShellRoute(
         builder: (context, state, child) => HomeScreen(childView: child),
@@ -111,6 +131,17 @@ final appRouter = GoRouter(
         name: TicketQRScanScreen.name,
         builder: (context, state) => const TicketQRScanScreen(),
       ),
+
+      GoRoute(
+        path: '/preview',
+        name: 'preview',
+        builder: (context, state) {
+          final url = state.uri.queryParameters['url']!;
+          final isVideo = state.uri.queryParameters['isVideo'] == 'true';
+          return MediaPreviewScreen(url: url, isVideo: isVideo);
+        },
+      ),
+
 
     ],
 

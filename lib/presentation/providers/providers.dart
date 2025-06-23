@@ -1,3 +1,5 @@
+export 'auth/auth_provider.dart';
+export 'auth/auth_service_provider.dart';
 export 'config/theme_mode_provider.dart';
 export 'devices/device_filter_provider.dart';
 export 'devices/device_info_provider.dart';

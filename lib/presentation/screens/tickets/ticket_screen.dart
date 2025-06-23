@@ -1,9 +1,10 @@
-import 'package:elanel_asistencia_it/presentation/providers/users/technician_users_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vibration/vibration.dart';
 import 'package:vibration/vibration_presets.dart';
 
+import 'package:elanel_asistencia_it/presentation/providers/users/technician_users_provider.dart';
 import 'package:elanel_asistencia_it/domain/entities/device.dart';
 import 'package:elanel_asistencia_it/domain/entities/ticket.dart';
 import 'package:elanel_asistencia_it/domain/entities/user.dart';
@@ -84,7 +85,50 @@ class _TicketViewState extends ConsumerState<_TicketView> {
         children: [
           InfoTicketCard(size: size, ticket: ticket, colors: colors),
 
-          
+          if (ticket.mediaUrls.isNotEmpty)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 17),
+              const Text(
+                'Archivos adjuntos',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: ticket.mediaUrls.map((url) {
+                  final isImage = url.endsWith('.jpg') || url.endsWith('.jpeg') || url.endsWith('.png');
+                  final isVideo = url.endsWith('.mp4') || url.endsWith('.mov') || url.endsWith('.avi');
+
+                  return GestureDetector(
+                    onTap: () {
+                      context.push('/preview?url=${Uri.encodeComponent(url)}&isVideo=$isVideo');
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: SizedBox(
+                        width: 100,
+                        height: 100,
+                        child: isImage
+                            ? Image.network(url, fit: BoxFit.cover)
+                            : Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  Container(color: Colors.black26),
+                                  const Icon(Icons.play_circle, size: 30, color: Colors.white),
+                                ],
+                              ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+
+            ],
+          ),
+
 
           InfoTicketTimeline(
             ticket: ticket,

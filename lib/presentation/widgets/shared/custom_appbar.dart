@@ -1,6 +1,7 @@
 import 'package:elanel_asistencia_it/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomAppbar extends ConsumerWidget {
   const CustomAppbar({super.key});
@@ -36,9 +37,16 @@ class CustomAppbar extends ConsumerWidget {
                     : Icons.dark_mode),
               ),
               IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.notifications_none_rounded),
+                onPressed: () async {
+                  await ref.read(authServiceProvider).logout();
+                  if (context.mounted) {
+                    context.go('/login');
+                  }
+                },
+                tooltip: 'Cerrar sesión',
+                icon: const Icon(Icons.logout),
               ),
+
             ],
           ),
         ),
