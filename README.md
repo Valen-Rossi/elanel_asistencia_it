@@ -19,11 +19,43 @@ Esta aplicación fue diseñada para optimizar la gestión de incidentes técnico
 - 📊 **Inventario:** Control detallado de hardware y software por usuario.
 - 🌓 **Modo Oscuro/Claro:** Interfaz adaptativa mediante Riverpod.
 
-## 📸 Capturas de Pantalla
+### 📸 Galería del Proyecto
 
-| Home | Tickets | Detalle |
-|-------|---------------|-----------------------|
-| <img src="assets/images/home.jpg" width="200"> | <img src="assets/images/tickets.jpg" width="200"> | <img src="assets/images/detalle.jpg" width="200"> |
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Vista Principal</b></td>
+      <td align="center"><b>Gestión de Tickets</b></td>
+      <td align="center"><b>Detalle de Ticket</b></td>
+    </tr>
+    <tr>
+      <td><img src="assets/images/home.jpg" width="220"></td>
+      <td><img src="assets/images/tickets.jpg" width="220"></td>
+      <td><img src="assets/images/detalle.jpg" width="220"></td>
+    </tr>
+  </table>
+</div>
+
+<details>
+  <summary><b>👉 Ver capturas adicionales por categoría (Click para desplegar)</b></summary>
+  <br>
+
+  #### 🎫 Gestión de Tickets y Usuarios
+  | Nuevo Ticket | Listado de Usuarios | Ficha de Perfil | Registro de Usuario |
+  | :---: | :---: | :---: | :---: |
+  | <img src="assets/images/nuevoticket.jpg" width="180"> | <img src="assets/images/usuarios.jpg" width="180"> | <img src="assets/images/ficha.jpg" width="180"> | <img src="assets/images/crearusuario.jpg" width="180"> |
+
+  #### 📦 Inventario y Dispositivos
+  | Vista Inventario | Detalle de Dispositivo | Alta de Activo |
+  | :---: | :---: | :---: |
+  | <img src="assets/images/inventario.jpg" width="180"> | <img src="assets/images/dispositivo.jpg" width="180"> | <img src="assets/images/creardispositivo.jpg" width="180"> |
+
+  #### 💡 Centro de Ayuda (FAQ)
+  | Preguntas Frecuentes | Visualización de Solución | Nueva Pregunta |
+  | :---: | :---: | :---: |
+  | <img src="assets/images/preguntas.jpg" width="180"> | <img src="assets/images/solucion.jpg" width="180"> | <img src="assets/images/nuevapregunta.jpg" width="180"> |
+
+</details>
 
 ## 🏗️ Arquitectura y Stack Técnico
 
