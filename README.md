@@ -23,7 +23,7 @@ Esta aplicación fue diseñada para optimizar la gestión de incidentes técnico
 
 | Home | Tickets | Detalle |
 |-------|---------------|-----------------------|
-| <img src="screenshots/home.png" width="200"> | <img src="screenshots/tickets.png" width="200"> | <img src="screenshots/detalle.png" width="200"> |
+| <img src="assets/images/home.jpg" width="200"> | <img src="assets/images/tickets.jpg" width="200"> | <img src="assets/images/detalle.jpg" width="200"> |
 
 ## 🏗️ Arquitectura y Stack Técnico
 
