@@ -76,4 +76,4 @@ The project follows **Clean Architecture** principles, separating responsibiliti
 - **Estilo / Style:** Material 3.
 
 ## ✉️ Contacto / Contact
-Luca Valentino Rossi - [valerossi2004@gmail.com](mailto:valerossi2004@gmail.com) - [LinkedIn](https://www.linkedin.com/in/valentino-rossi-1b2819338/)
+Luca Valentino Rossi - [valerossi2004@gmail.com](mailto:valerossi2004@gmail.com) - [LinkedIn](https://www.linkedin.com/in/lucavalentinorossi/)
